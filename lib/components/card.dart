@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:todolist/screens/todo.dart';
 import 'package:todolist/utils/colors.dart';
 
 void main() => runApp(const MyCard(title: '',));
@@ -11,7 +12,16 @@ class MyCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => {},
+      onTap: () => {
+        Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => Todo(
+            title: title,
+          )
+        )
+      )
+      },
       child: Container(
         width: 300,
         height: 60,
