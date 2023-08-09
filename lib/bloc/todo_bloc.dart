@@ -10,12 +10,16 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
   final TodoRepository repository;
 
   TodoBloc(this.repository) : super(const TodoInitial()) {
-    on<TodoEvent>((event, emit) {
+    Stream<TodoState> on (TodoEvent event) async* {
       if(event is GetTodo) {
+        final todo = this.repository.getTodoById(event.id);
+        yield TodoLoaded(todo);
+      }else if(event is GetAllTodos) {
 
       }else if(event is AddTodo) {
-        
+        final todo = repository.addTodo(event.todolist);
+        yield TodoLoaded(todo);
       }
-    });
+    }
   }
 }

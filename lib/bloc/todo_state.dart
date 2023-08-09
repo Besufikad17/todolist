@@ -18,7 +18,7 @@ class TodoLoading extends TodoState {
 }
 
 class TodoLoaded extends TodoState {
-  final Todo todo;
+  final Map<String, dynamic> todo;
   const TodoLoaded(this.todo);
   @override
   List<Object> get props => [Todo];
