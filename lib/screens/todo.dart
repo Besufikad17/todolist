@@ -43,8 +43,13 @@ class _TodoState extends State<Todo> {
               checkColor: Colors.white,
               value: lists[index]["status"] == "completed",
               onChanged: (bool? value) {
+                print(value);
                 setState(() {
-                  lists[index]["status"] == "completed";
+                  if(value ?? false) {
+                    lists[index]["status"] = "completed";
+                  }else {
+                    lists[index]["status"] = "pending";
+                  }
                 });
               },
               controlAffinity: ListTileControlAffinity.leading, 
