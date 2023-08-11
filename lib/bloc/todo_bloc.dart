@@ -7,19 +7,20 @@ part 'todo_event.dart';
 part 'todo_state.dart';
 
 class TodoBloc extends Bloc<TodoEvent, TodoState> {
-  final TodoRepository repository;
+  final TodoRepository _repository;
 
-  TodoBloc(this.repository) : super(const TodoInitial()) {
-    Stream<TodoState> on (TodoEvent event) async* {
-      if(event is GetTodo) {
-        final todo = repository.getTodoById(event.id);
-        yield TodoLoaded(todo);
-      }else if(event is GetAllTodos) {
-        yield TodosLoaded(repository.getTodos());
-      }else if(event is AddTodo) {
-        final todo = repository.addTodo(event.todolist);
-        yield TodosLoaded(repository.getTodos());
-      }
-    }
+  TodoBloc(this._repository) : super(const TodoInitial()) {
+     on<GetAllTodos>((event, emit) async {
+        emit(TodosLoaded(_repository.getTodos()));
+     });
+
+     on<GetTodo>((event, emit) async {
+      //  TODO 
+     });
+
+     on<AddTodo>((event, emit) async {
+        _repository.addTodo(event.todolist);
+        emit(TodosLoaded(_repository.getTodos()));
+     });
   }
 }

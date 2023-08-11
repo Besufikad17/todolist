@@ -4,38 +4,20 @@ import 'package:todolist/utils/utils.dart';
 
 class TodoRepository {
 
-  final todoBox = Hive.box('todo');
+  final Box<Todo> _todoBox = Hive.box('todos');
 
-  Map<String, dynamic> addTodo (Todo todo) {
-    String id = getRandomString(4);
-    todoBox.put(id,todo);
-    todoBox.close();
-    return {
-      "id": id,
-      "todo": todoBox.get(id)
-    };
+  void addTodo (Todo todo) {
+    _todoBox.add(todo);
   }
 
-  List<Map<String, Todo>> getTodos () {
-    List<Map<String, Todo>> todos = [];
-    for (var key in todoBox.keys) {
-      todos.add({
-        "id": key,
-        "todo": todoBox.get(key)
-      });
-    }
-    todoBox.close();
-    return todos;
-  }
-
-  Todo getTodoById (String id) { 
-    return todoBox.get(id);
+  List<Todo> getTodos () {
+    return _todoBox.values.toList();
   }
 
   Todo? getTodoByTitle (String title) {
-    for (var key in todoBox.keys) {
-      if((todoBox.get(key) as Todo).title == title){
-        return todoBox.get(key);
+    for (var key in _todoBox.keys) {
+      if((_todoBox.get(key) as Todo).title == title){
+        return _todoBox.get(key);
       }
     }
     return null;
