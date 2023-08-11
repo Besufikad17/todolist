@@ -1,26 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:todolist/components/button.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:todolist/bloc/todo_bloc.dart';
+import 'package:todolist/components/popup.dart';
+import 'package:todolist/models/lists.dart';
+import 'package:todolist/repository/todo_repository.dart';
 
-class Todo extends StatefulWidget {
+class TodoPage extends StatefulWidget {
   final String title;
-  Todo({super.key, required this.title});
+  TodoPage({super.key, required this.title});
 
   @override
-  State<Todo> createState() => _TodoState(title: title);
+  State<TodoPage> createState() => _TodoPageState(title: title);
 }
 
-class _TodoState extends State<Todo> {
+class _TodoPageState extends State<TodoPage> {
   final String title;
-  _TodoState({required this.title});
-
-  List<Map<String, dynamic>> lists = [
-    {
-      "title": "List 1",
-      "status": "pending"
-    }
-  ];
-
+  _TodoPageState({required this.title});
   TextEditingController text = TextEditingController();
+  TodoRepository repository = TodoRepository();
 
   @override
   Widget build(BuildContext context) {
@@ -30,77 +27,89 @@ class _TodoState extends State<Todo> {
         appBar: AppBar(
           title: Text(title),
         ),
-        body: ListView.builder(
-          itemCount: lists.length,
-          itemBuilder: (context, index) {
-            return CheckboxListTile(
-              title: Text(
-                lists[index]["title"],
-                style: TextStyle(
-                  decoration: lists[index]["status"] == "completed" ? TextDecoration.lineThrough : TextDecoration.none,
-                ),
-              ),
-              checkColor: Colors.white,
-              value: lists[index]["status"] == "completed",
-              onChanged: (bool? value) {
-                print(value);
-                setState(() {
-                  if(value ?? false) {
-                    lists[index]["status"] = "completed";
-                  }else {
-                    lists[index]["status"] = "pending";
-                  }
-                });
-              },
-              controlAffinity: ListTileControlAffinity.leading, 
-            );
-          }
+        body: BlocProvider(
+          create: (context) => TodoBloc(repository),
+          child: BlocConsumer<TodoBloc, TodoState>(
+            listener: (context, state) => {},
+            builder: (BuildContext context, TodoState state) {
+              if(state is TodoInitial) {
+                return buildInitialInput(context.read<TodoBloc>());
+              }else if(state is TodoLoading) {
+                return buildLoading();
+              }else if(state is TodoLoaded){
+                return _buildLoaded(context.read<TodoBloc>(), state);
+              }
+              return Container();
+            }
+          ),
         ),
-        floatingActionButton: FloatingActionButton(
-              onPressed: () => {
-                 showDialog(
-                  context: context,
-                  builder: (context) {
-                    return AlertDialog(
-                      title: const Text("Add Todo"),
-                      content: Column(
-                        children: [
-                          TextField(
-                            controller: text,
-                            decoration: const InputDecoration(  
-                              border: OutlineInputBorder(),  
-                              labelText: 'List',  
-                              hintText: 'Add Todo list..',  
-                            ), 
-                          ),
-                          const SizedBox(height: 20,),
-                          MyButton(
-                            text: "Add", 
-                            width: 250, 
-                            height: 40, 
-                            bgcolor: "#91d2ff", 
-                            borderRadius: 10, 
-                            fgcolor: "#000000", 
-                            fontSize: 13, 
-                            onPressed: () => {
-                              setState((){
-                                lists.add({
-                                  "title": text.text,
-                                  "status": "pending"
-                                });
-                                lists = lists;
-                              })
-                            }
-                          )
-                      ]),
-                    );
-                  }
-                 )
-              },
-              tooltip: 'Increment',
-              child: const Icon(Icons.add),
-            ),
       ),
     );
   }
+
+  Widget buildInitialInput(TodoBloc bloc) {
+    return Center(
+      child: ElevatedButton(
+        onPressed: () => {
+           showDialog(
+            context: context,
+            builder: (context) {
+              return Popup(text: text, bloc: bloc, flag: "list",todoTitle: title,);
+            }
+           )
+        },
+        child: const Icon(Icons.add),
+      ),
+    );
+  }
+
+  Widget buildLoading() {
+    return const Center(
+      child: CircularProgressIndicator(),
+    );
+  }
+
+  Widget _buildLoaded(TodoBloc bloc, TodoLoaded state) {
+    return Column(
+      children: [
+        Expanded(
+          child: ListView.builder(
+            itemCount: state.todo.lists.length,
+            itemBuilder: (context, index) {
+              return CheckboxListTile(
+                title: Text(
+                  state.todo.lists[index].title,
+                  style: TextStyle(
+                    decoration: state.todo.lists[index].status == Status.completed ? TextDecoration.lineThrough : TextDecoration.none,
+                  ),
+                ),
+                checkColor: Colors.white,
+                value: state.todo.lists[index].status == Status.completed,
+                onChanged: (bool? value) {
+                  if(value ?? false) {
+                    // TODO update list status to completed
+                  }else {
+                    // TODO update list status to pending
+                  }
+                },
+                controlAffinity: ListTileControlAffinity.leading, 
+              );
+            }
+          ),
+        ),
+        ElevatedButton(
+          onPressed: () => {
+            showDialog(
+              context: context,
+              builder: (context) {
+                return Popup(text: text, bloc: bloc, flag: "list",todoTitle: title,);
+              }
+            )
+          },
+          child: const Icon(Icons.add),
+        ),
+      ],
+    );
+  }
 }
+

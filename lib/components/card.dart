@@ -16,7 +16,7 @@ class MyCard extends StatelessWidget {
         Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => Todo(
+          builder: (context) => TodoPage(
             title: title,
           )
         )

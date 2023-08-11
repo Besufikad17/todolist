@@ -19,21 +19,38 @@ class GetAllTodos extends TodoEvent {
 }
 
 class GetTodo extends TodoEvent {
-  final String id;
+  final String title;
 
-  const GetTodo(this.id);
+  const GetTodo(this.title);
 
   @override
-  List<Object?> get props => [id];
+  List<Object?> get props => [title];
 }
 
 class AddTodo extends TodoEvent {
   final Todo todolist;
 
-  const AddTodo({
-    required this.todolist
-  });
+  const AddTodo(this.todolist);
   
   @override
   List<Object?> get props => [todolist];
+}
+
+class AddList extends TodoEvent {
+  final Lists list;
+  final String title;
+
+  const AddList(this.list, this.title);
+  
+  @override
+  List<Object?> get props => [list];
+}
+
+class UpdateListStatus extends TodoEvent {
+  final Status status;
+
+  const UpdateListStatus(this.status);
+  
+  @override
+  List<Object?> get props => [status];
 }

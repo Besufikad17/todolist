@@ -1,6 +1,6 @@
 import 'package:hive/hive.dart';
+import 'package:todolist/models/lists.dart';
 import 'package:todolist/models/todo.dart';
-import 'package:todolist/utils/utils.dart';
 
 class TodoRepository {
 
@@ -10,16 +10,19 @@ class TodoRepository {
     _todoBox.add(todo);
   }
 
+  void addList (Lists list, String title) async {
+    final todoToEdit = _todoBox.values.firstWhere((todo) => todo.title == title);
+    final index = _todoBox.values.toList().indexOf(todoToEdit);
+    List<Lists> lists = todoToEdit.lists;
+    lists.add(list);
+    await _todoBox.put(index,Todo(title: todoToEdit.title, lists: lists, createdAt: todoToEdit.createdAt));
+  }
+
   List<Todo> getTodos () {
     return _todoBox.values.toList();
   }
 
-  Todo? getTodoByTitle (String title) {
-    for (var key in _todoBox.keys) {
-      if((_todoBox.get(key) as Todo).title == title){
-        return _todoBox.get(key);
-      }
-    }
-    return null;
+  Todo getTodoByTitle (String title) {
+    return _todoBox.values.where((todo) => todo.title == title).first;
   }
 }

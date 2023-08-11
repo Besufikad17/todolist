@@ -56,9 +56,7 @@ class _MyHomePageState extends State<MyHomePage> {
       body: BlocProvider(
         create: (context) => TodoBloc(repository)..add(const GetAllTodos()),
         child: BlocConsumer<TodoBloc, TodoState>(
-            listener: (context, state) => {
-
-            },
+            listener: (context, state) => {},
             builder: (BuildContext context, TodoState state) {
               if(state is TodoInitial) {
                 return buildInitialInput(context.read<TodoBloc>());
@@ -81,7 +79,7 @@ class _MyHomePageState extends State<MyHomePage> {
            showDialog(
             context: context,
             builder: (context) {
-              return Popup(text: text, bloc: bloc);
+              return Popup(text: text, bloc: bloc, flag: "todo");
             }
            )
         },
@@ -111,7 +109,7 @@ class _MyHomePageState extends State<MyHomePage> {
                showDialog(
                 context: context,
                 builder: (context) {
-                  return Popup(text: text, bloc: bloc,);
+                  return Popup(text: text, bloc: bloc, flag: "todo");
                 }
                )
             },

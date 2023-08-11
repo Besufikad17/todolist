@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:todolist/models/lists.dart';
 import 'package:todolist/models/todo.dart';
 import 'package:todolist/repository/todo_repository.dart';
 
@@ -15,12 +16,17 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
      });
 
      on<GetTodo>((event, emit) async {
-      //  TODO 
+        final todo = _repository.getTodoByTitle(event.title);
+        emit(TodoLoaded(todo));
      });
 
      on<AddTodo>((event, emit) async {
         _repository.addTodo(event.todolist);
         emit(TodosLoaded(_repository.getTodos()));
+     });
+
+     on<AddList>((event, emit) async {
+        _repository.addList(event.list, event.title);
      });
   }
 }
