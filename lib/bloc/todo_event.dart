@@ -48,9 +48,11 @@ class AddList extends TodoEvent {
 
 class UpdateListStatus extends TodoEvent {
   final Status status;
+  final String listTitle;
+  final String todoTitle;
 
-  const UpdateListStatus(this.status);
+  const UpdateListStatus(this.status, this.listTitle, this.todoTitle);
   
   @override
-  List<Object?> get props => [status];
+  List<Object?> get props => [status, listTitle, todoTitle];
 }

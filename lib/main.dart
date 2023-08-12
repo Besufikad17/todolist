@@ -5,6 +5,7 @@ import 'package:todolist/bloc/todo_bloc.dart';
 import 'package:todolist/components/card.dart';
 import 'package:path_provider/path_provider.dart' as path_provider;
 import 'package:todolist/components/popup.dart';
+import 'package:todolist/models/lists.dart';
 import 'package:todolist/models/todo.dart';
 import 'package:todolist/repository/todo_repository.dart';
 
@@ -13,6 +14,8 @@ void main() async {
   final appDocumentDir = await path_provider.getApplicationDocumentsDirectory();
   Hive.init(appDocumentDir.path);
   Hive.registerAdapter(TodoAdapter());
+  Hive.registerAdapter(ListsAdapter());
+  Hive.registerAdapter(StatusAdapter());
   await Hive.openBox<Todo>('todos');
   runApp(const MyApp());
 }
@@ -83,7 +86,7 @@ class _MyHomePageState extends State<MyHomePage> {
             }
            )
         },
-        child: const Icon(Icons.add),
+        child: const Row(children: [Text("Add"), Icon(Icons.add)],),
       ),
     );
   }

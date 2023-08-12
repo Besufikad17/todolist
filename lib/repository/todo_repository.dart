@@ -18,6 +18,19 @@ class TodoRepository {
     await _todoBox.put(index,Todo(title: todoToEdit.title, lists: lists, createdAt: todoToEdit.createdAt));
   }
 
+  void UpdateListStatus (Status status, String listTitle, String todoTitle) async {
+    final todoToEdit = _todoBox.values.firstWhere((todo) => todo.title == todoTitle);
+    final index = _todoBox.values.toList().indexOf(todoToEdit);
+    List<Lists> lists = todoToEdit.lists;
+    for(var list in lists) {
+      if(list.title == listTitle) {
+        lists.remove(list);
+        lists.add(Lists(title: listTitle, status: status));
+      }
+    }
+    await _todoBox.put(index,Todo(title: todoToEdit.title, lists: lists, createdAt: todoToEdit.createdAt));
+  }
+
   List<Todo> getTodos () {
     return _todoBox.values.toList();
   }

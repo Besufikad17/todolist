@@ -28,7 +28,7 @@ class _TodoPageState extends State<TodoPage> {
           title: Text(title),
         ),
         body: BlocProvider(
-          create: (context) => TodoBloc(repository),
+          create: (context) => TodoBloc(repository)..add(GetTodo(title)),
           child: BlocConsumer<TodoBloc, TodoState>(
             listener: (context, state) => {},
             builder: (BuildContext context, TodoState state) {
@@ -87,9 +87,9 @@ class _TodoPageState extends State<TodoPage> {
                 value: state.todo.lists[index].status == Status.completed,
                 onChanged: (bool? value) {
                   if(value ?? false) {
-                    // TODO update list status to completed
+                    bloc.add(UpdateListStatus(Status.completed,  state.todo.lists[index].title, title));
                   }else {
-                    // TODO update list status to pending
+                    bloc.add(UpdateListStatus(Status.pending,  state.todo.lists[index].title, title));
                   }
                 },
                 controlAffinity: ListTileControlAffinity.leading, 
