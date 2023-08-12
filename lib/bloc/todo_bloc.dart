@@ -26,12 +26,14 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
      });
 
      on<AddList>((event, emit) async {
+        emit( const TodoLoading());
         _repository.addList(event.list, event.title);
         final todo = _repository.getTodoByTitle(event.title);
         emit(TodoLoaded(todo));
      });
 
      on<UpdateListStatus>((event, emit) async {
+      emit( const TodoLoading());
       _repository.UpdateListStatus(event.status, event.listTitle, event.todoTitle);
       final todo = _repository.getTodoByTitle(event.todoTitle);
       emit(TodoLoaded(todo));

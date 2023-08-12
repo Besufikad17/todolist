@@ -11,7 +11,6 @@ import 'package:todolist/repository/todo_repository.dart';
 
 
 void main() async {
-  
   WidgetsFlutterBinding.ensureInitialized();
   final appDocumentDir = await path_provider.getApplicationDocumentsDirectory();
   Hive.init(appDocumentDir.path);
@@ -38,7 +37,6 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
 class MyHomePage extends StatefulWidget {
   MyHomePage({super.key, required this.title});
   final String title;
