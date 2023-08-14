@@ -8,6 +8,7 @@ import 'package:todolist/components/popup.dart';
 import 'package:todolist/models/lists.dart';
 import 'package:todolist/models/todo.dart';
 import 'package:todolist/repository/todo_repository.dart';
+import 'package:todolist/screens/preference.dart';
 
 
 void main() async {
@@ -55,6 +56,16 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(widget.title),
+        actions: <Widget>[
+          IconButton(
+            icon: const Icon(Icons.settings),
+            onPressed: () {
+              Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => const PreferencePage(),
+              ));
+            },
+          )
+        ]
       ),
       body: BlocProvider(
         create: (context) => TodoBloc(repository)..add(const GetAllTodos()),
