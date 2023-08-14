@@ -23,6 +23,7 @@ class MyCard extends StatelessWidget {
       )
       },
       child: Container(
+        color: Theme.of(context).scaffoldBackgroundColor,
         width: 300,
         height: 60,
         padding: const EdgeInsets.all(4),

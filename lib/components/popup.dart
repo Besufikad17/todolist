@@ -37,9 +37,6 @@ class Popup extends StatelessWidget {
             text: "Add", 
             width: 250, 
             height: 40, 
-            bgcolor: "#91d2ff", 
-            borderRadius: 10, 
-            fgcolor: "#000000", 
             fontSize: 13, 
             onPressed: () => {
               if(flag == "todo") {

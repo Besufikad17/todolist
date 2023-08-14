@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:todolist/bloc/theme_bloc.dart';
 import 'package:todolist/bloc/todo_bloc.dart';
 import 'package:todolist/components/popup.dart';
 import 'package:todolist/models/lists.dart';
 import 'package:todolist/repository/todo_repository.dart';
+import 'package:todolist/screens/preference.dart';
 
 class TodoPage extends StatefulWidget {
   final String title;
@@ -25,7 +27,18 @@ class _TodoPageState extends State<TodoPage> {
       title: title,
       home: Scaffold(
         appBar: AppBar(
-          title: Text(title),
+          backgroundColor: Theme.of(context).colorScheme.primary,
+          title: Text(title, style: Theme.of(context).textTheme.displayLarge),
+          actions: <Widget>[
+            IconButton(
+              icon: const Icon(Icons.settings),
+              onPressed: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => PreferencePage(bloc: context.read<ThemeBloc>(),),
+                ));
+              },
+            )
+          ],
         ),
         body: BlocProvider(
           create: (context) => TodoBloc(repository)..add(GetTodo(title)),

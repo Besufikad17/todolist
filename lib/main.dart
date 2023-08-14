@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive/hive.dart';
+import 'package:todolist/bloc/theme_bloc.dart';
 import 'package:todolist/bloc/todo_bloc.dart';
 import 'package:todolist/components/card.dart';
 import 'package:path_provider/path_provider.dart' as path_provider;
 import 'package:todolist/components/popup.dart';
+import 'package:todolist/global/theme/themes.dart';
 import 'package:todolist/models/lists.dart';
 import 'package:todolist/models/todo.dart';
 import 'package:todolist/repository/todo_repository.dart';
 import 'package:todolist/screens/preference.dart';
-
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -27,77 +28,94 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'TodoList',
-      theme: ThemeData(
-        colorScheme:
-            ColorScheme.fromSeed(seedColor: const Color.fromARGB(255, 34, 62, 138)),
-        useMaterial3: true,
+    return BlocProvider(
+      create: (context) => ThemeBloc(),
+      child: BlocConsumer<ThemeBloc, ThemeState>(
+        listener:(context, state) {},
+        builder: (context, state) {
+          if(state is ThemeInitial) {
+            return MaterialApp(
+              title: 'TodoList',
+              theme: appThemeData[AppTheme.gruvBoxLight],
+              home: MyHomePage(title: 'Home', themeBloc: context.read<ThemeBloc>(),),
+            );
+          }else {
+            return MaterialApp(
+              title: 'TodoList',
+              theme: appThemeData[state.appTheme],
+              home: MyHomePage(title: 'Home', themeBloc: context.read<ThemeBloc>(),),
+            );
+          }     
+        },
       ),
-      home: MyHomePage(title: 'Home'),
     );
   }
 }
+
 class MyHomePage extends StatefulWidget {
-  MyHomePage({super.key, required this.title});
+  MyHomePage({super.key, required this.title, required this.themeBloc});
   final String title;
+  final ThemeBloc themeBloc;
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<MyHomePage> createState() => _MyHomePageState(themeBloc);
 }
 
 class _MyHomePageState extends State<MyHomePage> {
   TextEditingController text = TextEditingController();
   final TodoRepository repository = TodoRepository();
-  
+  final ThemeBloc themeBloc;
+
+  _MyHomePageState(this.themeBloc);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(widget.title),
-        actions: <Widget>[
-          IconButton(
-            icon: const Icon(Icons.settings),
-            onPressed: () {
-              Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => const PreferencePage(),
-              ));
-            },
-          )
-        ]
-      ),
+          backgroundColor: Theme.of(context).colorScheme.primary,
+          title: Text(widget.title, style: Theme.of(context).textTheme.displayLarge),
+          actions: <Widget>[
+            IconButton(
+              icon: const Icon(Icons.settings),
+              onPressed: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => PreferencePage(bloc: themeBloc),
+                ));
+              },
+            )
+          ]),
       body: BlocProvider(
         create: (context) => TodoBloc(repository)..add(const GetAllTodos()),
         child: BlocConsumer<TodoBloc, TodoState>(
-            listener: (context, state) => {},
-            builder: (BuildContext context, TodoState state) {
-              if(state is TodoInitial) {
-                return buildInitialInput(context.read<TodoBloc>());
-              }else if(state is TodoLoading) {
-                return buildLoading();
-              }else if(state is TodosLoaded) {
-                return buildWithLoaded(state.todos, context.read<TodoBloc>());
-              }
-              return Container();
-            },
-          ),
+          listener: (context, state) => {},
+          builder: (BuildContext context, TodoState state) {
+            if (state is TodoInitial) {
+              return buildInitialInput(context.read<TodoBloc>());
+            } else if (state is TodoLoading) {
+              return buildLoading();
+            } else if (state is TodosLoaded) {
+              return buildWithLoaded(state.todos, context.read<TodoBloc>());
+            }
+            return Container();
+          },
+        ),
       ),
     );
   }
 
-   Widget buildInitialInput(TodoBloc bloc) {
+  Widget buildInitialInput(TodoBloc bloc) {
     return Center(
       child: ElevatedButton(
         onPressed: () => {
-           showDialog(
-            context: context,
-            builder: (context) {
-              return Popup(text: text, bloc: bloc, flag: "todo");
-            }
-           )
+          showDialog(
+              context: context,
+              builder: (context) {
+                return Popup(text: text, bloc: bloc, flag: "todo");
+              })
         },
-        child: const Row(children: [Text("Add"), Icon(Icons.add)],),
+        child: const Row(
+          children: [Text("Add"), Icon(Icons.add)],
+        ),
       ),
     );
   }
@@ -110,26 +128,24 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Widget buildWithLoaded(List<Todo> todos, TodoBloc bloc) {
     return Column(children: [
-          Expanded(
-            child: ListView.builder(
-              itemCount: todos.length,
-              itemBuilder: (BuildContext context, int index) {
-                 return MyCard(title: todos[index].title);
-              }
-            ),
-          ),
-          ElevatedButton(
-            onPressed: () => {
-               showDialog(
-                context: context,
-                builder: (context) {
-                  return Popup(text: text, bloc: bloc, flag: "todo");
-                }
-               )
-            },
-            child: const Icon(Icons.add),
-          ),
-        ]);
+      Expanded(
+        child: ListView.builder(
+            itemCount: todos.length,
+            itemBuilder: (BuildContext context, int index) {
+              return MyCard(title: todos[index].title);
+            }),
+      ),
+      ElevatedButton(
+        onPressed: () => {
+          showDialog(
+              context: context,
+              builder: (context) {
+                return Popup(text: text, bloc: bloc, flag: "todo");
+              })
+        },
+        child: const Icon(Icons.add),
+      ),
+    ]);
   }
 
   @override
@@ -138,5 +154,3 @@ class _MyHomePageState extends State<MyHomePage> {
     super.dispose();
   }
 }
-
-
