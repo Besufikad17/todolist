@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:todolist/bloc/theme_bloc.dart';
 import 'package:todolist/global/theme/themes.dart';
+import 'package:todolist/models/theme.dart';
 
 class PreferencePage extends StatelessWidget {
   const PreferencePage({super.key, required this.bloc});
@@ -20,9 +20,9 @@ class PreferencePage extends StatelessWidget {
           Expanded(
             child: ListView.builder(
             padding: const EdgeInsets.all(8),
-            itemCount: AppTheme.values.length,
+            itemCount: MyAppTheme.values.length,
             itemBuilder: (context, index) {
-              final itemAppTheme = AppTheme.values[index];
+              final itemAppTheme = MyAppTheme.values[index];
               return Card(
                 color: appThemeData[itemAppTheme]!.scaffoldBackgroundColor,
                 child: ListTile(

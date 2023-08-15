@@ -3,12 +3,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive/hive.dart';
 import 'package:todolist/bloc/theme_bloc.dart';
 import 'package:todolist/bloc/todo_bloc.dart';
+import 'package:todolist/components/button.dart';
 import 'package:todolist/components/card.dart';
 import 'package:path_provider/path_provider.dart' as path_provider;
 import 'package:todolist/components/popup.dart';
 import 'package:todolist/global/theme/themes.dart';
 import 'package:todolist/models/lists.dart';
+import 'package:todolist/models/theme.dart' as myTheme;
 import 'package:todolist/models/todo.dart';
+import 'package:todolist/repository/theme_repository.dart';
 import 'package:todolist/repository/todo_repository.dart';
 import 'package:todolist/screens/preference.dart';
 
@@ -19,7 +22,10 @@ void main() async {
   Hive.registerAdapter(TodoAdapter());
   Hive.registerAdapter(ListsAdapter());
   Hive.registerAdapter(StatusAdapter());
+  Hive.registerAdapter(myTheme.ThemeAdapter());
+  Hive.registerAdapter(myTheme.MyAppThemeAdapter());
   await Hive.openBox<Todo>('todos');
+  await Hive.openBox<myTheme.Theme>('theme');
   runApp(const MyApp());
 }
 
@@ -29,14 +35,15 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => ThemeBloc(),
+      create: (context) => ThemeBloc(ThemeRepository())..add(const GetTheme()),
       child: BlocConsumer<ThemeBloc, ThemeState>(
         listener:(context, state) {},
         builder: (context, state) {
           if(state is ThemeInitial) {
+            context.read<ThemeBloc>().add(const AddTheme(myTheme.Theme(myTheme.MyAppTheme.lightGruvBox)));
             return MaterialApp(
               title: 'TodoList',
-              theme: appThemeData[AppTheme.gruvBoxLight],
+              theme: appThemeData[myTheme.MyAppTheme.lightGruvBox],
               home: MyHomePage(title: 'Home', themeBloc: context.read<ThemeBloc>(),),
             );
           }else {
@@ -135,7 +142,10 @@ class _MyHomePageState extends State<MyHomePage> {
               return MyCard(title: todos[index].title);
             }),
       ),
-      ElevatedButton(
+      MyButton(
+        text: "Add todo",
+        width: 250,
+        height: 40,
         onPressed: () => {
           showDialog(
               context: context,
@@ -143,7 +153,6 @@ class _MyHomePageState extends State<MyHomePage> {
                 return Popup(text: text, bloc: bloc, flag: "todo");
               })
         },
-        child: const Icon(Icons.add),
       ),
     ]);
   }

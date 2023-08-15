@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:todolist/bloc/theme_bloc.dart';
 import 'package:todolist/bloc/todo_bloc.dart';
+import 'package:todolist/components/button.dart';
 import 'package:todolist/components/popup.dart';
 import 'package:todolist/models/lists.dart';
 import 'package:todolist/repository/todo_repository.dart';
@@ -34,7 +35,9 @@ class _TodoPageState extends State<TodoPage> {
               icon: const Icon(Icons.settings),
               onPressed: () {
                 Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => PreferencePage(bloc: context.read<ThemeBloc>(),),
+                  builder: (context) => PreferencePage(
+                    bloc: context.read<ThemeBloc>(),
+                  ),
                 ));
               },
             )
@@ -43,18 +46,17 @@ class _TodoPageState extends State<TodoPage> {
         body: BlocProvider(
           create: (context) => TodoBloc(repository)..add(GetTodo(title)),
           child: BlocConsumer<TodoBloc, TodoState>(
-            listener: (context, state) => {},
-            builder: (BuildContext context, TodoState state) {
-              if(state is TodoInitial) {
-                return buildInitialInput(context.read<TodoBloc>());
-              }else if(state is TodoLoading) {
-                return buildLoading();
-              }else if(state is TodoLoaded){
-                return _buildLoaded(context.read<TodoBloc>(), state);
-              }
-              return Container();
-            }
-          ),
+              listener: (context, state) => {},
+              builder: (BuildContext context, TodoState state) {
+                if (state is TodoInitial) {
+                  return buildInitialInput(context.read<TodoBloc>());
+                } else if (state is TodoLoading) {
+                  return buildLoading();
+                } else if (state is TodoLoaded) {
+                  return _buildLoaded(context.read<TodoBloc>(), state);
+                }
+                return Container();
+              }),
         ),
       ),
     );
@@ -64,12 +66,16 @@ class _TodoPageState extends State<TodoPage> {
     return Center(
       child: ElevatedButton(
         onPressed: () => {
-           showDialog(
-            context: context,
-            builder: (context) {
-              return Popup(text: text, bloc: bloc, flag: "list",todoTitle: title,);
-            }
-           )
+          showDialog(
+              context: context,
+              builder: (context) {
+                return Popup(
+                  text: text,
+                  bloc: bloc,
+                  flag: "list",
+                  todoTitle: title,
+                );
+              })
         },
         child: const Icon(Icons.add),
       ),
@@ -87,42 +93,51 @@ class _TodoPageState extends State<TodoPage> {
       children: [
         Expanded(
           child: ListView.builder(
-            itemCount: state.todo.lists.length,
-            itemBuilder: (context, index) {
-              return CheckboxListTile(
-                title: Text(
-                  state.todo.lists[index].title,
-                  style: TextStyle(
-                    decoration: state.todo.lists[index].status == Status.completed ? TextDecoration.lineThrough : TextDecoration.none,
+              itemCount: state.todo.lists.length,
+              itemBuilder: (context, index) {
+                return CheckboxListTile(
+                  title: Text(
+                    state.todo.lists[index].title,
+                    style: TextStyle(
+                      decoration:
+                          state.todo.lists[index].status == Status.completed
+                              ? TextDecoration.lineThrough
+                              : TextDecoration.none,
+                    ),
                   ),
-                ),
-                checkColor: Colors.white,
-                value: state.todo.lists[index].status == Status.completed,
-                onChanged: (bool? value) {
-                  if(value ?? false) {
-                    bloc.add(UpdateListStatus(Status.completed,  state.todo.lists[index].title, title));
-                  }else {
-                    bloc.add(UpdateListStatus(Status.pending,  state.todo.lists[index].title, title));
-                  }
-                },
-                controlAffinity: ListTileControlAffinity.leading, 
-              );
-            }
-          ),
+                  checkColor: Colors.white,
+                  value: state.todo.lists[index].status == Status.completed,
+                  onChanged: (bool? value) {
+                    if (value ?? false) {
+                      bloc.add(UpdateListStatus(Status.completed,
+                          state.todo.lists[index].title, title));
+                    } else {
+                      bloc.add(UpdateListStatus(Status.pending,
+                          state.todo.lists[index].title, title));
+                    }
+                  },
+                  controlAffinity: ListTileControlAffinity.leading,
+                );
+              }),
         ),
-        ElevatedButton(
+        MyButton(
+          text: "Add list",
+          width: 250,
+          height: 40,
           onPressed: () => {
             showDialog(
-              context: context,
-              builder: (context) {
-                return Popup(text: text, bloc: bloc, flag: "list",todoTitle: title,);
-              }
-            )
+                context: context,
+                builder: (context) {
+                  return Popup(
+                    text: text,
+                    bloc: bloc,
+                    flag: "list",
+                    todoTitle: title,
+                  );
+                })
           },
-          child: const Icon(Icons.add),
         ),
       ],
     );
   }
 }
-

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:todolist/utils/colors.dart';
 
+// ignore: must_be_immutable
 class MyButton extends StatelessWidget {
   final String text;
   final double width;

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:todolist/models/theme.dart';
 import 'package:todolist/utils/colors.dart';
-
-enum AppTheme { gruvBoxLight, gruvBoxDark }
 
 Color _iconColor = getColorFromHex("#458588");
 Color _lightPrimaryColor = getColorFromHex("#fbf1c7");
@@ -28,7 +27,7 @@ final TextStyle _darkScreenHeading1TextStyle =
     _lightScreenHeading1TextStyle.copyWith(color: _darkOnPrimaryColor);
 
 final appThemeData = {
-  AppTheme.gruvBoxLight: ThemeData(
+  MyAppTheme.lightGruvBox: ThemeData(
       scaffoldBackgroundColor: _lightPrimaryVariantColor,
       appBarTheme: AppBarTheme(
         color: _lightPrimaryColor,
@@ -43,7 +42,7 @@ final appThemeData = {
       textTheme: _lightTextTheme,
       buttonTheme: ButtonThemeData(buttonColor: _iconColor)
       ),
-  AppTheme.gruvBoxDark: ThemeData(
+  MyAppTheme.darkGruvBox: ThemeData(
       scaffoldBackgroundColor: _darkPrimaryVariantColor,
       appBarTheme: AppBarTheme(
         color: _darkPrimaryColor,
