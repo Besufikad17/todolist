@@ -1,6 +1,5 @@
 import 'package:equatable/equatable.dart';
 import 'package:hive/hive.dart';
-import 'package:todolist/global/theme/themes.dart';
 
 part 'theme.g.dart';
 
