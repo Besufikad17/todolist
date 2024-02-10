@@ -9,7 +9,7 @@ class MyAppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      backgroundColor: Theme.of(context).colorScheme.primary,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       title: Text(title, style: Theme.of(context).textTheme.displayLarge),
       actions: <Widget>[
         IconButton(

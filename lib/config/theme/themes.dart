@@ -3,11 +3,11 @@ import 'package:todolist/data/datasource/local/theme_service.dart';
 import 'package:todolist/utils/resources/colors.dart';
 
 Color _iconColor = getColorFromHex("#458588");
-Color _lightPrimaryColor = getColorFromHex("#fbf1c7");
+Color _lightPrimaryColor = getColorFromHex("#458588");
 Color _lightPrimaryVariantColor = getColorFromHex("#fbf1c7");
 Color _lightSecondaryColor = getColorFromHex("#f9f5d7");
 Color _lightOnPrimaryColor = getColorFromHex("#282828");
-Color _darkPrimaryColor = getColorFromHex("#282828");
+Color _darkPrimaryColor = getColorFromHex("#458588");
 Color _darkPrimaryVariantColor = getColorFromHex("#282828");
 Color _darkSecondaryColor = getColorFromHex("#3c3836s");
 Color _darkOnPrimaryColor = getColorFromHex("#ebdbb2");

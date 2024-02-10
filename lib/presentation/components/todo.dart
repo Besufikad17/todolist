@@ -1,94 +1,94 @@
 import 'package:flutter/material.dart';
+import 'package:todolist/config/router/args.dart';
 import 'package:todolist/presentation/components/text.dart';
 import 'package:todolist/utils/resources/colors.dart';
-import 'package:todolist/utils/constants/enums.dart';
+import 'package:todolist/utils/resources/data.dart';
 
 class TodoComponent extends StatelessWidget {
   const TodoComponent({
     super.key,
     required this.title,
-    required this.status,
-    required this.dueDate,
+    required this.date,
     this.onlyBottom = true
   });
 
   final String title;
-  final TodoStatus status;
-  final DateTime dueDate;
+  final DateTime date;
   final bool onlyBottom;
 
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
+    final textColor = toHex(Theme.of(context).textTheme.displayLarge!.color!);
+    final primaryColor = toHex(Theme.of(context).colorScheme.primary);
 
-    return Container(
-      height: 50,
-      width: width < 600 ? width: 500,
-      decoration: BoxDecoration(
-        border: onlyBottom ?
-        Border(
-          bottom:  BorderSide(
-            color: getColorFromHex("#B4B4B4"),
-            width: 1,
-            style: BorderStyle.solid
-          )
-        ) : Border(
-          bottom:  BorderSide(
-            color: getColorFromHex("#B4B4B4"),
-            width: 1,
-            style: BorderStyle.solid
+    return GestureDetector(
+      onTap: () {
+        Navigator.pushNamed(
+          context,
+          '/todo',
+          arguments: TodoPageArgs(
+            title
           ),
-          top:  BorderSide(
-            color: getColorFromHex("#B4B4B4"),
-            width: 1,
-            style: BorderStyle.solid
+        );
+      },
+      child: Container(
+        height: 50,
+        width: width < 600 ? width: 500,
+        decoration: BoxDecoration(
+          border: onlyBottom ?
+          Border(
+            bottom:  BorderSide(
+              color: getColorFromHex("#B4B4B4"),
+              width: 1,
+              style: BorderStyle.solid
+            )
+          ) : Border(
+            bottom:  BorderSide(
+              color: getColorFromHex("#B4B4B4"),
+              width: 1,
+              style: BorderStyle.solid
+            ),
+            top:  BorderSide(
+              color: getColorFromHex("#B4B4B4"),
+              width: 1,
+              style: BorderStyle.solid
+            )
           )
-        )
-      ),
-      child: SizedBox(
-        width: width,
-        child: Row(
-          children: [
-            Column(
+        ),
+        child: SizedBox(
+          width: width,
+          child: Center(
+            child: Column(
               children: [
                 SizedBox(
                   width: width - 10,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    mainAxisSize: MainAxisSize.max,
-                    children: [
-                      MyText(
-                        text: title, 
-                        size: 15,
-                        color: "#000000",
-                      ),
-                      MyText(
-                        text: dueDate.toString(), 
-                        size: 15,
-                        color: "#000000",
-                        isBold: true,
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(height: 10,),
-                SizedBox(
-                  width: width - 20,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    mainAxisSize: MainAxisSize.max,
-                    children: [
-                      MyText(
-                        text: status.name.toUpperCase(), 
-                        size: 12,
-                        color: "#6a6a6a",
-                      ),
-                    ],
+                  child: Padding(
+                    padding: const EdgeInsets.only(
+                      top: 8
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        MyText(
+                          text: title, 
+                          size: 15,
+                          color: textColor
+                        ),
+                        MyText(
+                          text: formatDate(date), 
+                          size: 15,
+                          color: primaryColor.replaceAll(RegExp(r'f'), ''),
+                          isLight: true,
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ],
-            )
-          ],
+            ),
+          ),
         ),
       ),
     );

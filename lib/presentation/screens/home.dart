@@ -9,9 +9,8 @@ import 'package:todolist/locator.dart';
 import 'package:todolist/presentation/bloc/theme_bloc.dart';
 import 'package:todolist/presentation/bloc/todo_bloc.dart';
 import 'package:todolist/presentation/components/app_bar.dart';
-import 'package:todolist/presentation/components/button.dart';
-import 'package:todolist/presentation/components/card.dart';
 import 'package:todolist/presentation/components/popup.dart';
+import 'package:todolist/presentation/components/todo.dart';
 
 class Home extends StatelessWidget {
   Home({super.key});
@@ -22,6 +21,9 @@ final ThemeBloc themeBloc = ThemeBloc(ThemeRepositoryImpl(locator<Box<ThemeModel
 
   @override
   Widget build(BuildContext context) {
+    TodoBloc bloc = TodoBloc(repository);
+    final textColor = Theme.of(context).textTheme.displayLarge!.color;
+
     return Scaffold(
       appBar: const PreferredSize(
         preferredSize: Size.fromHeight(50),
@@ -30,7 +32,7 @@ final ThemeBloc themeBloc = ThemeBloc(ThemeRepositoryImpl(locator<Box<ThemeModel
         ),
       ),
       body: BlocProvider(
-        create: (context) => TodoBloc(repository)..add(const GetAllTodos()),
+        create: (context) => bloc..add(const GetAllTodos()),
         child: BlocConsumer<TodoBloc, TodoState>(
           listener: (context, state) => {},
           builder: (BuildContext context, TodoState state) {
@@ -44,6 +46,20 @@ final ThemeBloc themeBloc = ThemeBloc(ThemeRepositoryImpl(locator<Box<ThemeModel
             return Container();
           },
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(
+          Icons.add,
+          color: textColor,  
+        ),
+        onPressed: () {
+          showDialog(
+            context: context,
+            builder: (context) {
+              return Popup(text: text, bloc: bloc, flag: "todo");
+            }
+          );
+        }
       ),
     );
   }
@@ -75,22 +91,11 @@ final ThemeBloc themeBloc = ThemeBloc(ThemeRepositoryImpl(locator<Box<ThemeModel
     return Column(children: [
       Expanded(
         child: ListView.builder(
-            itemCount: todos.length,
-            itemBuilder: (BuildContext context, int index) {
-              return MyCard(title: todos[index].title);
-            }),
-      ),
-      MyButton(
-        text: "Add todo",
-        width: 250,
-        height: 40,
-        onPressed: () => {
-          showDialog(
-              context: context,
-              builder: (context) {
-                return Popup(text: text, bloc: bloc, flag: "todo");
-              })
-        },
+          itemCount: todos.length,
+          itemBuilder: (BuildContext context, int index) {
+            return TodoComponent(title: todos[index].title, date: todos[index].createdAt);
+          }
+        ),
       ),
     ]);
   }
