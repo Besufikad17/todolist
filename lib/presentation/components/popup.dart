@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:todolist/data/datasource/local/local_list_service.dart';
+import 'package:todolist/data/datasource/local/local_todo_service.dart';
 import 'package:todolist/presentation/bloc/todo_bloc.dart';
 import 'package:todolist/presentation/components/button.dart';
-import 'package:todolist/domain/models/lists.dart';
-import 'package:todolist/domain/models/todo.dart';
+import 'package:todolist/utils/constants/enums.dart';
 
 class Popup extends StatelessWidget {
   const Popup({
@@ -40,10 +41,10 @@ class Popup extends StatelessWidget {
             fontSize: 13, 
             onPressed: () => {
               if(flag == "todo") {
-                bloc.add(AddTodo(Todo(title: text.text, lists: [], createdAt: DateTime.now()))),
+                bloc.add(AddTodo(LocalTodo(title: text.text, lists: [], createdAt: DateTime.now()))),
                 bloc.add(const GetAllTodos())
               }else {
-                bloc.add(AddList(Lists(title: text.text, status: Status.pending), todoTitle!)),
+                bloc.add(AddList(LocalList(title: text.text, status: ListStatus.pending), todoTitle!)),
               }
             }
           )

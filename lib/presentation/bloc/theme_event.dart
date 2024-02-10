@@ -20,7 +20,7 @@ class GetTheme extends ThemeEvent {
 }
 
 class AddTheme extends ThemeEvent {
-  final Theme theme;
+  final ThemeModel theme;
   const AddTheme(this.theme);
 
   @override

@@ -1,32 +1,35 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'theme.dart';
+part of 'local_list_service.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
 // **************************************************************************
 
-class ThemeAdapter extends TypeAdapter<Theme> {
+class LocalListAdapter extends TypeAdapter<LocalList> {
   @override
-  final int typeId = 5;
+  final int typeId = 2;
 
   @override
-  Theme read(BinaryReader reader) {
+  LocalList read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return Theme(
-      fields[0] as MyAppTheme,
+    return LocalList(
+      title: fields[0] as String,
+      status: fields[1] as ListStatus,
     );
   }
 
   @override
-  void write(BinaryWriter writer, Theme obj) {
+  void write(BinaryWriter writer, LocalList obj) {
     writer
-      ..writeByte(1)
+      ..writeByte(2)
       ..writeByte(0)
-      ..write(obj.theme);
+      ..write(obj.title)
+      ..writeByte(1)
+      ..write(obj.status);
   }
 
   @override
@@ -35,34 +38,34 @@ class ThemeAdapter extends TypeAdapter<Theme> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is ThemeAdapter &&
+      other is LocalListAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }
 
-class MyAppThemeAdapter extends TypeAdapter<MyAppTheme> {
+class ListStatusAdapter extends TypeAdapter<ListStatus> {
   @override
-  final int typeId = 4;
+  final int typeId = 3;
 
   @override
-  MyAppTheme read(BinaryReader reader) {
+  ListStatus read(BinaryReader reader) {
     switch (reader.readByte()) {
       case 0:
-        return MyAppTheme.lightGruvBox;
+        return ListStatus.pending;
       case 1:
-        return MyAppTheme.darkGruvBox;
+        return ListStatus.completed;
       default:
-        return MyAppTheme.lightGruvBox;
+        return ListStatus.pending;
     }
   }
 
   @override
-  void write(BinaryWriter writer, MyAppTheme obj) {
+  void write(BinaryWriter writer, ListStatus obj) {
     switch (obj) {
-      case MyAppTheme.lightGruvBox:
+      case ListStatus.pending:
         writer.writeByte(0);
         break;
-      case MyAppTheme.darkGruvBox:
+      case ListStatus.completed:
         writer.writeByte(1);
         break;
     }
@@ -74,7 +77,7 @@ class MyAppThemeAdapter extends TypeAdapter<MyAppTheme> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is MyAppThemeAdapter &&
+      other is ListStatusAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }

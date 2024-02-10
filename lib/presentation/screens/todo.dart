@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hive/hive.dart';
+import 'package:todolist/data/datasource/local/local_list_service.dart';
+import 'package:todolist/data/datasource/local/local_todo_service.dart';
+import 'package:todolist/data/repository/local_todo_repository_impl.dart';
+import 'package:todolist/locator.dart';
 import 'package:todolist/presentation/bloc/theme_bloc.dart';
 import 'package:todolist/presentation/bloc/todo_bloc.dart';
 import 'package:todolist/presentation/components/button.dart';
 import 'package:todolist/presentation/components/popup.dart';
-import 'package:todolist/domain/models/lists.dart';
-import 'package:todolist/domain/repository/todo_repository.dart';
 import 'package:todolist/presentation/screens/preference.dart';
 
 class TodoPage extends StatefulWidget {
@@ -20,7 +23,7 @@ class _TodoPageState extends State<TodoPage> {
   final String title;
   _TodoPageState({required this.title});
   TextEditingController text = TextEditingController();
-  TodoRepository repository = TodoRepository();
+  LocalTodoRepositoryImpl repository = LocalTodoRepositoryImpl(locator.get<Box<LocalTodo>>());
 
   @override
   Widget build(BuildContext context) {
@@ -100,19 +103,19 @@ class _TodoPageState extends State<TodoPage> {
                     state.todo.lists[index].title,
                     style: TextStyle(
                       decoration:
-                          state.todo.lists[index].status == Status.completed
+                          state.todo.lists[index].status == ListStatus.completed
                               ? TextDecoration.lineThrough
                               : TextDecoration.none,
                     ),
                   ),
                   checkColor: Colors.white,
-                  value: state.todo.lists[index].status == Status.completed,
+                  value: state.todo.lists[index].status == ListStatus.completed,
                   onChanged: (bool? value) {
                     if (value ?? false) {
-                      bloc.add(UpdateListStatus(Status.completed,
+                      bloc.add(UpdateListStatus(ListStatus.completed,
                           state.todo.lists[index].title, title));
                     } else {
-                      bloc.add(UpdateListStatus(Status.pending,
+                      bloc.add(UpdateListStatus(ListStatus.pending,
                           state.todo.lists[index].title, title));
                     }
                   },

@@ -1,31 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive/hive.dart';
+import 'package:todolist/data/datasource/local/local_todo_service.dart';
+import 'package:todolist/data/datasource/local/theme_service.dart';
+import 'package:todolist/data/repository/local_todo_repository_impl.dart';
+import 'package:todolist/data/repository/theme_repository_impl.dart';
+import 'package:todolist/locator.dart';
 import 'package:todolist/presentation/bloc/theme_bloc.dart';
 import 'package:todolist/presentation/bloc/todo_bloc.dart';
 import 'package:todolist/presentation/components/button.dart';
 import 'package:todolist/presentation/components/card.dart';
-import 'package:path_provider/path_provider.dart' as path_provider;
 import 'package:todolist/presentation/components/popup.dart';
 import 'package:todolist/config/theme/themes.dart';
-import 'package:todolist/domain/models/lists.dart';
-import 'package:todolist/domain/models/theme.dart' as myTheme;
-import 'package:todolist/domain/models/todo.dart';
-import 'package:todolist/domain/repository/theme_repository.dart';
-import 'package:todolist/domain/repository/todo_repository.dart';
 import 'package:todolist/presentation/screens/preference.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  final appDocumentDir = await path_provider.getApplicationDocumentsDirectory();
-  Hive.init(appDocumentDir.path);
-  Hive.registerAdapter(TodoAdapter());
-  Hive.registerAdapter(ListsAdapter());
-  Hive.registerAdapter(StatusAdapter());
-  Hive.registerAdapter(myTheme.ThemeAdapter());
-  Hive.registerAdapter(myTheme.MyAppThemeAdapter());
-  await Hive.openBox<Todo>('todos');
-  await Hive.openBox<myTheme.Theme>('theme');
+  await initDependency();
   runApp(const MyApp());
 }
 
@@ -35,15 +26,15 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => ThemeBloc(ThemeRepository())..add(const GetTheme()),
+      create: (context) => ThemeBloc(ThemeRepositoryImpl(locator.get<Box<ThemeModel>>()))..add(const GetTheme()),
       child: BlocConsumer<ThemeBloc, ThemeState>(
         listener:(context, state) {},
         builder: (context, state) {
           if(state is ThemeInitial) {
-            context.read<ThemeBloc>().add(const AddTheme(myTheme.Theme(myTheme.MyAppTheme.lightGruvBox)));
+            context.read<ThemeBloc>().add(const AddTheme(ThemeModel(MyAppTheme.lightGruvBox)));
             return MaterialApp(
               title: 'TodoList',
-              theme: appThemeData[myTheme.MyAppTheme.lightGruvBox],
+              theme: appThemeData[MyAppTheme.lightGruvBox],
               home: MyHomePage(title: 'Home', themeBloc: context.read<ThemeBloc>(),),
             );
           }else {
@@ -60,7 +51,7 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({super.key, required this.title, required this.themeBloc});
+  const MyHomePage({super.key, required this.title, required this.themeBloc});
   final String title;
   final ThemeBloc themeBloc;
 
@@ -70,7 +61,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   TextEditingController text = TextEditingController();
-  final TodoRepository repository = TodoRepository();
+  LocalTodoRepositoryImpl repository = LocalTodoRepositoryImpl(locator.get<Box<LocalTodo>>());
   final ThemeBloc themeBloc;
 
   _MyHomePageState(this.themeBloc);
@@ -133,7 +124,7 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  Widget buildWithLoaded(List<Todo> todos, TodoBloc bloc) {
+  Widget buildWithLoaded(List<LocalTodo> todos, TodoBloc bloc) {
     return Column(children: [
       Expanded(
         child: ListView.builder(

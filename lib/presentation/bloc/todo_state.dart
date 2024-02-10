@@ -18,17 +18,17 @@ class TodoLoading extends TodoState {
 }
 
 class TodosLoaded extends TodoState {
-  final List<Todo> todos;
+  final List<LocalTodo> todos;
   const TodosLoaded(this.todos);
   @override
   List<Object> get props => [todos];
 }
 
 class TodoLoaded extends TodoState {
-  final Todo todo;
+  final LocalTodo todo;
   const TodoLoaded(this.todo);
   @override
-  List<Object> get props => [Todo];
+  List<Object> get props => [LocalTodo];
 }
 
 class TodoError extends TodoState {

@@ -1,10 +1,10 @@
 import 'package:equatable/equatable.dart';
 import 'package:hive/hive.dart';
 
-part 'lists.g.dart';
+part 'local_list_service.g.dart';
 
 @HiveType(typeId: 3)
-enum Status {
+enum ListStatus {
   @HiveField(0)
   pending,
 
@@ -13,15 +13,15 @@ enum Status {
 }
 
 @HiveType(typeId: 2)
-class Lists extends Equatable {
+class LocalList extends Equatable {
   
   @HiveField(0)
   final String title;
   
   @HiveField(1)
-  final Status status;
+  final ListStatus status;
 
-  Lists({
+  const LocalList({
     required this.title,
     required this.status
   });

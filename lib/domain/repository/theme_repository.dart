@@ -1,19 +1,9 @@
-import 'package:hive/hive.dart';
-import 'package:todolist/domain/models/theme.dart';
+import 'package:todolist/data/datasource/local/theme_service.dart';
 
-class ThemeRepository {
-  final Box<Theme> _themeBox = Hive.box('theme');
+abstract class ThemeRepository {
+  Future<void> changeTheme (ThemeModel theme);
 
-  void changeTheme (Theme theme) async {
-    _themeBox.put('theme', theme);
-  }
+  Future<void> addTheme (ThemeModel theme);
 
-  void addTheme (Theme theme) async {
-    _themeBox.put('theme', theme);
-  }
-
-  Future<Theme?> getTheme () async {
-    return _themeBox.get('theme');
-  }
-
+  Future<ThemeModel?> getTheme ();
 }

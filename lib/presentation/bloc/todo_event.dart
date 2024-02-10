@@ -28,7 +28,7 @@ class GetTodo extends TodoEvent {
 }
 
 class AddTodo extends TodoEvent {
-  final Todo todolist;
+  final LocalTodo todolist;
 
   const AddTodo(this.todolist);
   
@@ -37,7 +37,7 @@ class AddTodo extends TodoEvent {
 }
 
 class AddList extends TodoEvent {
-  final Lists list;
+  final LocalList list;
   final String title;
 
   const AddList(this.list, this.title);
@@ -47,7 +47,7 @@ class AddList extends TodoEvent {
 }
 
 class UpdateListStatus extends TodoEvent {
-  final Status status;
+  final ListStatus status;
   final String listTitle;
   final String todoTitle;
 

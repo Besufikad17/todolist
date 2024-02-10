@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:todolist/domain/models/theme.dart';
+import 'package:todolist/data/datasource/local/theme_service.dart';
 import 'package:todolist/utils/resources/colors.dart';
 
 Color _iconColor = getColorFromHex("#458588");

@@ -1,21 +1,21 @@
 import 'package:equatable/equatable.dart';
 import 'package:hive/hive.dart';
-import 'package:todolist/domain/models/lists.dart';
+import 'package:todolist/data/datasource/local/local_list_service.dart';
 
-part 'todo.g.dart';
+part 'local_todo_service.g.dart';
 
 @HiveType(typeId: 1)
-class Todo extends Equatable {
+class LocalTodo extends Equatable {
   @HiveField(0)
   final String title;
 
   @HiveField(1)
-  final List<Lists> lists;
+  final List<LocalList> lists;
   
   @HiveField(2)
   final DateTime createdAt;
 
-  Todo({
+  const LocalTodo({
     required this.title,
     required this.lists,
     required this.createdAt,
