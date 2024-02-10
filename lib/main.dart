@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive/hive.dart';
-import 'package:todolist/bloc/theme_bloc.dart';
-import 'package:todolist/bloc/todo_bloc.dart';
-import 'package:todolist/components/button.dart';
-import 'package:todolist/components/card.dart';
+import 'package:todolist/presentation/bloc/theme_bloc.dart';
+import 'package:todolist/presentation/bloc/todo_bloc.dart';
+import 'package:todolist/presentation/components/button.dart';
+import 'package:todolist/presentation/components/card.dart';
 import 'package:path_provider/path_provider.dart' as path_provider;
-import 'package:todolist/components/popup.dart';
-import 'package:todolist/global/theme/themes.dart';
-import 'package:todolist/models/lists.dart';
-import 'package:todolist/models/theme.dart' as myTheme;
-import 'package:todolist/models/todo.dart';
-import 'package:todolist/repository/theme_repository.dart';
-import 'package:todolist/repository/todo_repository.dart';
-import 'package:todolist/screens/preference.dart';
+import 'package:todolist/presentation/components/popup.dart';
+import 'package:todolist/config/theme/themes.dart';
+import 'package:todolist/domain/models/lists.dart';
+import 'package:todolist/domain/models/theme.dart' as myTheme;
+import 'package:todolist/domain/models/todo.dart';
+import 'package:todolist/domain/repository/theme_repository.dart';
+import 'package:todolist/domain/repository/todo_repository.dart';
+import 'package:todolist/presentation/screens/preference.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

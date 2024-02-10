@@ -1,5 +1,5 @@
 import 'package:hive/hive.dart';
-import 'package:todolist/models/theme.dart';
+import 'package:todolist/domain/models/theme.dart';
 
 class ThemeRepository {
   final Box<Theme> _themeBox = Hive.box('theme');

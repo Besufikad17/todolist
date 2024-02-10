@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:todolist/models/theme.dart';
-import 'package:todolist/repository/theme_repository.dart';
+import 'package:todolist/domain/models/theme.dart';
+import 'package:todolist/domain/repository/theme_repository.dart';
 import 'package:todolist/utils/utils.dart';
 
 part 'theme_event.dart';

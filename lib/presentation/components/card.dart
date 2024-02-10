@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:todolist/screens/todo.dart';
-import 'package:todolist/utils/colors.dart';
+import 'package:todolist/presentation/screens/todo.dart';
+import 'package:todolist/utils/resources/colors.dart';
 
 void main() => runApp(const MyCard(title: '',));
 

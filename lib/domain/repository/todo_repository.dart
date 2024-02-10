@@ -1,6 +1,6 @@
 import 'package:hive/hive.dart';
-import 'package:todolist/models/lists.dart';
-import 'package:todolist/models/todo.dart';
+import 'package:todolist/domain/models/lists.dart';
+import 'package:todolist/domain/models/todo.dart';
 
 class TodoRepository {
 

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:todolist/bloc/theme_bloc.dart';
-import 'package:todolist/bloc/todo_bloc.dart';
-import 'package:todolist/components/button.dart';
-import 'package:todolist/components/popup.dart';
-import 'package:todolist/models/lists.dart';
-import 'package:todolist/repository/todo_repository.dart';
-import 'package:todolist/screens/preference.dart';
+import 'package:todolist/presentation/bloc/theme_bloc.dart';
+import 'package:todolist/presentation/bloc/todo_bloc.dart';
+import 'package:todolist/presentation/components/button.dart';
+import 'package:todolist/presentation/components/popup.dart';
+import 'package:todolist/domain/models/lists.dart';
+import 'package:todolist/domain/repository/todo_repository.dart';
+import 'package:todolist/presentation/screens/preference.dart';
 
 class TodoPage extends StatefulWidget {
   final String title;

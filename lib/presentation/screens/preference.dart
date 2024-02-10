@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:todolist/bloc/theme_bloc.dart';
-import 'package:todolist/global/theme/themes.dart';
-import 'package:todolist/models/theme.dart';
+import 'package:todolist/presentation/bloc/theme_bloc.dart';
+import 'package:todolist/config/theme/themes.dart';
+import 'package:todolist/domain/models/theme.dart';
 
 class PreferencePage extends StatelessWidget {
   const PreferencePage({super.key, required this.bloc});

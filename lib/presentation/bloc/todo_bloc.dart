@@ -1,8 +1,8 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:todolist/models/lists.dart';
-import 'package:todolist/models/todo.dart';
-import 'package:todolist/repository/todo_repository.dart';
+import 'package:todolist/domain/models/lists.dart';
+import 'package:todolist/domain/models/todo.dart';
+import 'package:todolist/domain/repository/todo_repository.dart';
 
 part 'todo_event.dart';
 part 'todo_state.dart';

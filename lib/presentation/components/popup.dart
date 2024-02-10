@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:todolist/bloc/todo_bloc.dart';
-import 'package:todolist/components/button.dart';
-import 'package:todolist/models/lists.dart';
-import 'package:todolist/models/todo.dart';
+import 'package:todolist/presentation/bloc/todo_bloc.dart';
+import 'package:todolist/presentation/components/button.dart';
+import 'package:todolist/domain/models/lists.dart';
+import 'package:todolist/domain/models/todo.dart';
 
 class Popup extends StatelessWidget {
   const Popup({

@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:hive/hive.dart';
-import 'package:todolist/models/lists.dart';
+import 'package:todolist/domain/models/lists.dart';
 
 part 'todo.g.dart';
 

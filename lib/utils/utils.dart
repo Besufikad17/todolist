@@ -1,6 +1,6 @@
 import 'dart:math';
 
-import 'package:todolist/models/theme.dart';
+import 'package:todolist/domain/models/theme.dart';
 
 const _chars = 'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
 Random _rnd = Random();
