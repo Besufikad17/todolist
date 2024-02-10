@@ -4,6 +4,13 @@ abstract class ThemeEvent extends Equatable {
   const ThemeEvent();
 }
 
+class InitialTheme extends ThemeEvent {
+  const InitialTheme();
+
+  @override
+  List<Object?> get props => [];
+}
+
 class ThemeChanged extends ThemeEvent {
   final MyAppTheme appTheme;
   const ThemeChanged(this.appTheme);

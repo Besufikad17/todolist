@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:todolist/presentation/screens/todo.dart';
+import 'package:todolist/config/router/args.dart';
 import 'package:todolist/utils/resources/colors.dart';
 
 void main() => runApp(const MyCard(title: '',));
@@ -13,14 +13,13 @@ class MyCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () => {
-        Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => TodoPage(
-            title: title,
-          )
+        Navigator.pushNamed(
+          context,
+          '/todo',
+          arguments: TodoPageArgs(
+            title
+          ),
         )
-      )
       },
       child: Container(
         color: Theme.of(context).scaffoldBackgroundColor,

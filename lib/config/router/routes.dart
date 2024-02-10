@@ -1,6 +1,7 @@
-import 'package:flutter/material.dart';
 import 'package:todolist/presentation/screens/home.dart';
+import 'package:todolist/presentation/screens/todo.dart';
 
-final Map<String, Widget> routes = {
-  // '/' : Home()
+final routes = {
+  '/' : (context) => Home(),
+  '/todo': (context) => TodoPage()
 };

@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:todolist/data/datasource/local/theme_service.dart';
+import 'package:todolist/locator.dart';
 import 'package:todolist/presentation/bloc/theme_bloc.dart';
 import 'package:todolist/config/theme/themes.dart';
 
 class PreferencePage extends StatelessWidget {
-  const PreferencePage({super.key, required this.bloc});
-  final ThemeBloc bloc;
+  PreferencePage({super.key});
+  final ThemeBloc bloc = locator.get<ThemeBloc>();
 
   @override
   Widget build(BuildContext context) {

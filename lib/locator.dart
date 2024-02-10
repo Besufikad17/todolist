@@ -4,6 +4,8 @@ import 'package:get_it/get_it.dart';
 import 'package:todolist/data/datasource/local/local_list_service.dart';
 import 'package:todolist/data/datasource/local/local_todo_service.dart';
 import 'package:todolist/data/datasource/local/theme_service.dart';
+import 'package:todolist/data/repository/theme_repository_impl.dart';
+import 'package:todolist/presentation/bloc/theme_bloc.dart';
 
 
 final locator = GetIt.instance;
@@ -25,5 +27,9 @@ Future<void> initDependency() async {
 
   locator.registerSingleton<Box<ThemeModel>>(
     Hive.box('theme')
+  );
+
+  locator.registerSingleton<ThemeBloc>(
+    ThemeBloc(ThemeRepositoryImpl(locator.get<Box<ThemeModel>>()))
   );
 }

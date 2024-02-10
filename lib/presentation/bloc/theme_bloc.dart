@@ -11,6 +11,10 @@ class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
   final ThemeRepositoryImpl _repository;
 
   ThemeBloc(this._repository) : super(const ThemeInitial()) {
+    on<InitialTheme>((event, emit) async {
+      emit(const ThemeInitial());
+    });
+   
     on<GetTheme>((event, emit) async {
       final theme = await _repository.getTheme();
       emit(ThemeLoaded(theme!.theme));

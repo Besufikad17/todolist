@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:todolist/presentation/bloc/theme_bloc.dart';
 import 'package:todolist/presentation/screens/preference.dart';
 
 class MyAppBar extends StatelessWidget {
-  const MyAppBar({super.key, required this.title, required this.themeBloc});
-  
-  final ThemeBloc themeBloc;
+  const MyAppBar({super.key, required this.title});
+
   final String title;
 
   @override
@@ -18,7 +16,7 @@ class MyAppBar extends StatelessWidget {
           icon: const Icon(Icons.settings),
           onPressed: () {
             Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => PreferencePage(bloc: themeBloc),
+              builder: (context) => PreferencePage(),
             ));
           },
         )
