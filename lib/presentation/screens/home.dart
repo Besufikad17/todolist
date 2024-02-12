@@ -10,7 +10,9 @@ import 'package:todolist/presentation/bloc/theme_bloc.dart';
 import 'package:todolist/presentation/bloc/todo_bloc.dart';
 import 'package:todolist/presentation/components/app_bar.dart';
 import 'package:todolist/presentation/components/popup.dart';
+import 'package:todolist/presentation/components/text.dart';
 import 'package:todolist/presentation/components/todo.dart';
+import 'package:todolist/utils/resources/widget.dart';
 
 class Home extends StatelessWidget {
   Home({super.key});
@@ -37,9 +39,11 @@ class Home extends StatelessWidget {
           listener: (context, state) => {},
           builder: (BuildContext context, TodoState state) {
             if (state is TodoInitial) {
-              return buildInitial(context, context.read<TodoBloc>());
+              return Center(
+                child: MyText(text: "No todos :(", size: 15),
+              );
             } else if (state is TodoLoading) {
-              return buildLoading();
+              return buildLoading(context);
             } else if (state is TodosLoaded) {
               return buildLoaded(context, state.todos, context.read<TodoBloc>());
             }
@@ -56,7 +60,7 @@ class Home extends StatelessWidget {
           showDialog(
             context: context,
             builder: (context) {
-              return Popup(text: text, bloc: bloc, flag: "todo");
+              return AddPopup(text: text, bloc: bloc, flag: "todo");
             }
           );
         }
@@ -64,28 +68,7 @@ class Home extends StatelessWidget {
     );
   }
 
-  Widget buildInitial(BuildContext context, TodoBloc bloc) {
-    return Center(
-      child: ElevatedButton(
-        onPressed: () => {
-          showDialog(
-            context: context,
-            builder: (context) {
-              return Popup(text: text, bloc: bloc, flag: "todo");
-            })
-        },
-        child: const Row(
-          children: [Text("Add"), Icon(Icons.add)],
-        ),
-      ),
-    );
-  }
-
-  Widget buildLoading() {
-    return const Center(
-      child: CircularProgressIndicator(),
-    );
-  }
+ 
 
   Widget buildLoaded(BuildContext context, List<LocalTodo> todos, TodoBloc bloc) {
     return Padding(

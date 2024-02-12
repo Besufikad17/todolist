@@ -41,6 +41,7 @@ dependencies:
   hive_flutter: ^1.1.0
   golden_toolkit: ^0.15.0
   get_it: ^7.6.7
+  swipe_to: ^1.0.5
 
 dev_dependencies:
   flutter_test:

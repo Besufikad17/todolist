@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 
 class MyTextField extends StatelessWidget {
-  const MyTextField({super.key, required this.controller});
+  const MyTextField({super.key, required this.controller, required this.flag});
 
   final TextEditingController controller;
+  final String flag;
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +29,7 @@ class MyTextField extends StatelessWidget {
           ),
           borderRadius: const BorderRadius.all(Radius.circular(15))
         ), 
-        hintText: 'Add Todo..',  
+        hintText: 'Add $flag..',  
         hintStyle: TextStyle(
           fontSize: 15,
           color: Theme.of(context).textTheme.displayLarge!.color!
