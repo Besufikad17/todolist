@@ -48,7 +48,7 @@ class AddPopup extends StatelessWidget {
               SizedBox(
                 width: 300, 
                 height: 40, 
-                child: MyTextField(controller: text, flag: flag,)
+                child: MyTextField(controller: text, hintText: "Add $flag..",)
               ),
               const SizedBox(height: 20,),
               MyButton(
