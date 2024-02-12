@@ -3,6 +3,7 @@ import 'package:todolist/data/datasource/local/local_list_service.dart';
 import 'package:todolist/data/datasource/local/local_todo_service.dart';
 import 'package:todolist/presentation/bloc/todo_bloc.dart';
 import 'package:todolist/presentation/components/button.dart';
+import 'package:todolist/presentation/components/text_field.dart';
 
 class Popup extends StatelessWidget {
   const Popup({
@@ -23,20 +24,16 @@ class Popup extends StatelessWidget {
     return Dialog(
       child: Container(
         height: 150,
-         decoration: BoxDecoration(
+        decoration: BoxDecoration(
           color: Theme.of(context).scaffoldBackgroundColor,
-          border: Border(
-            bottom:  BorderSide(
-              color: Theme.of(context).scaffoldBackgroundColor,
-              width: 1,
-              style: BorderStyle.solid
+            boxShadow: [
+            BoxShadow(
+              color: Theme.of(context).scaffoldBackgroundColor.withOpacity(0.5),
+              spreadRadius: 1,
+              blurRadius: 5,
+              offset: const Offset(0, 3), // changes position of shadow
             ),
-            top:  BorderSide(
-              color: Theme.of(context).scaffoldBackgroundColor,
-              width: 1,
-              style: BorderStyle.solid
-            )
-          )
+          ],
         ),
         child: Padding(
           padding: const EdgeInsets.symmetric(
@@ -48,37 +45,7 @@ class Popup extends StatelessWidget {
               SizedBox(
                 width: 300, 
                 height: 40, 
-                child: TextField(
-                  controller: text,
-                  decoration: InputDecoration(  
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Theme.of(context).textTheme.displayLarge!.color!,
-                        width: 1
-                      ),
-                      borderRadius: const BorderRadius.all(Radius.circular(15))
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Theme.of(context).textTheme.displayLarge!.color!,
-                        width: 1
-                      ),
-                      borderRadius: const BorderRadius.all(Radius.circular(15))
-                    ),
-                    labelText: 'Todo',  
-                    hintText: 'Add Todo..',  
-                    hintStyle: TextStyle(
-                      fontSize: 15,
-                      color: Theme.of(context).textTheme.displayLarge!.color!
-                    ),
-                    labelStyle: TextStyle(
-                      fontSize: 15,
-                      color: Theme.of(context).textTheme.displayLarge!.color!
-                    ),
-                    contentPadding: const EdgeInsets.all(8)
-                  ), 
-                  
-                ),
+                child: MyTextField(controller: text)
               ),
               const SizedBox(height: 20,),
               MyButton(

@@ -32,7 +32,6 @@ class PreferencePage extends StatelessWidget {
                     style: TextStyle(color: appThemeData[itemAppTheme]!.colorScheme.onPrimary),
                   ),
                   onTap: () {
-                    print("change theme");
                     bloc.add(ThemeChanged(itemAppTheme));
                   },
                 ),

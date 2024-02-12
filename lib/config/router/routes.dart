@@ -3,5 +3,5 @@ import 'package:todolist/presentation/screens/todo.dart';
 
 final routes = {
   '/' : (context) => Home(),
-  '/todo': (context) => TodoPage()
+  '/todo': (context) => const TodoPage()
 };

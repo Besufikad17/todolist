@@ -15,9 +15,9 @@ import 'package:todolist/presentation/components/todo.dart';
 class Home extends StatelessWidget {
   Home({super.key});
 
-final ThemeBloc themeBloc = ThemeBloc(ThemeRepositoryImpl(locator<Box<ThemeModel>>()));
-  TextEditingController text = TextEditingController();
-  LocalTodoRepositoryImpl repository = LocalTodoRepositoryImpl(locator.get<Box<LocalTodo>>());
+  final ThemeBloc themeBloc = ThemeBloc(ThemeRepositoryImpl(locator<Box<ThemeModel>>()));
+  final TextEditingController text = TextEditingController();
+  final LocalTodoRepositoryImpl repository = LocalTodoRepositoryImpl(locator.get<Box<LocalTodo>>());
 
   @override
   Widget build(BuildContext context) {
@@ -88,15 +88,22 @@ final ThemeBloc themeBloc = ThemeBloc(ThemeRepositoryImpl(locator<Box<ThemeModel
   }
 
   Widget buildLoaded(BuildContext context, List<LocalTodo> todos, TodoBloc bloc) {
-    return Column(children: [
-      Expanded(
-        child: ListView.builder(
-          itemCount: todos.length,
-          itemBuilder: (BuildContext context, int index) {
-            return TodoComponent(title: todos[index].title, date: todos[index].createdAt);
-          }
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Column(children: [
+        Expanded(
+          child: ListView.builder(
+            itemCount: todos.length,
+            itemBuilder: (BuildContext context, int index) {
+              return TodoComponent(
+                title: todos[index].title, 
+                date: todos[index].createdAt, 
+                lists: todos[index].lists.length,
+              );
+            }
+          ),
         ),
-      ),
-    ]);
+      ]),
+    );
   }
 }

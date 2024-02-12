@@ -9,11 +9,13 @@ class TodoComponent extends StatelessWidget {
     super.key,
     required this.title,
     required this.date,
+    required this.lists,
     this.onlyBottom = true
   });
 
   final String title;
   final DateTime date;
+  final int lists;
   final bool onlyBottom;
 
   @override
@@ -32,62 +34,49 @@ class TodoComponent extends StatelessWidget {
           ),
         );
       },
-      child: Container(
+      child: SizedBox(
         height: 50,
         width: width < 600 ? width: 500,
-        decoration: BoxDecoration(
-          border: onlyBottom ?
-          Border(
-            bottom:  BorderSide(
-              color: getColorFromHex("#B4B4B4"),
-              width: 1,
-              style: BorderStyle.solid
-            )
-          ) : Border(
-            bottom:  BorderSide(
-              color: getColorFromHex("#B4B4B4"),
-              width: 1,
-              style: BorderStyle.solid
-            ),
-            top:  BorderSide(
-              color: getColorFromHex("#B4B4B4"),
-              width: 1,
-              style: BorderStyle.solid
-            )
-          )
-        ),
-        child: SizedBox(
-          width: width,
-          child: Center(
-            child: Column(
-              children: [
-                SizedBox(
-                  width: width - 10,
-                  child: Padding(
-                    padding: const EdgeInsets.only(
-                      top: 8
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      mainAxisSize: MainAxisSize.max,
-                      children: [
-                        MyText(
-                          text: title, 
-                          size: 15,
-                          color: textColor
-                        ),
-                        MyText(
-                          text: formatDate(date), 
-                          size: 15,
-                          color: primaryColor.replaceAll(RegExp(r'f'), ''),
-                          isLight: true,
-                        ),
-                      ],
-                    ),
+        child: Center(
+          child: Column(
+            children: [
+              SizedBox(
+                width: width - 10,
+                child: Padding(
+                  padding: const EdgeInsets.only(
+                    top: 8
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          MyText(
+                            text: title, 
+                            size: 15,
+                            color: textColor
+                          ),
+                          const SizedBox(height: 10,),
+                          MyText(
+                            text: formatDate(date), 
+                            size: 12,
+                            color: primaryColor.replaceAll(RegExp(r'f'), ''),
+                            isLight: true,
+                          ),
+                        ],
+                      ),
+                      MyText(
+                        text: lists.toString(), 
+                        size: 15, 
+                        color: textColor,
+                      )
+                    ],
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),
