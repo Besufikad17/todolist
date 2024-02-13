@@ -42,6 +42,7 @@ dependencies:
   golden_toolkit: ^0.15.0
   get_it: ^7.6.7
   swipe_to: ^1.0.5
+  cached_network_image: ^3.3.1
 
 dev_dependencies:
   flutter_test:

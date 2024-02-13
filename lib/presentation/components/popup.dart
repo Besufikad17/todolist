@@ -147,3 +147,21 @@ class PromptPopup extends StatelessWidget {
     );
   }
 }
+
+class AlertPopup extends StatelessWidget {
+  const AlertPopup({super.key, required this.title, required this.body, required this.type});
+
+  final String title;
+  final AlertType type;
+  final Widget body;
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: type == AlertType.message ? 
+        Text(title) :
+        Text(title, style: const TextStyle(color: Colors.red)),
+      content: body,
+    );
+  }
+}
