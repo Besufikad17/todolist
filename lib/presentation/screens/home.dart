@@ -12,7 +12,6 @@ import 'package:todolist/presentation/components/popup.dart';
 import 'package:todolist/presentation/components/side_bar.dart';
 import 'package:todolist/presentation/components/text.dart';
 import 'package:todolist/presentation/components/text_field.dart';
-import 'package:todolist/presentation/components/todo.dart';
 import 'package:todolist/utils/resources/widget.dart';
 
 class HomePage extends StatelessWidget {
@@ -20,6 +19,7 @@ class HomePage extends StatelessWidget {
 
   final ThemeBloc themeBloc = ThemeBloc(ThemeRepositoryImpl(locator<Box<ThemeModel>>()));
   final TextEditingController text = TextEditingController();
+  final TextEditingController searchField = TextEditingController();
   final LocalTodoRepositoryImpl repository = LocalTodoRepositoryImpl(locator.get<Box<LocalTodo>>());
 
   @override
@@ -42,7 +42,7 @@ class HomePage extends StatelessWidget {
                       width: constraints.maxWidth, 
                       height: 40, 
                       child: MyTextField(
-                        controller: text,
+                        controller: searchField,
                         hintText: "Search todo..",
                         borderColor: Theme.of(context).colorScheme.secondary,
                       )
@@ -65,6 +65,9 @@ class HomePage extends StatelessWidget {
                         return buildLoading(context);
                       } else if (state is TodosLoaded) {
                         return buildLoaded(context, state.todos, context.read<TodoBloc>());
+                      } else if(state is TodoAdded || state is TodoUpdated) {
+                        bloc.add(const GetAllTodos());
+                        // FIXME
                       }
                       return Container();
                     },
@@ -90,21 +93,5 @@ class HomePage extends StatelessWidget {
         }
       ),
     );
-  }
-
-  Widget buildLoaded(BuildContext context, List<LocalTodo> todos, TodoBloc bloc) {
-    List<Widget> todoComponents =  [];
-
-    for(int i = 0; i < todos.length; i++) {
-      todoComponents.add(
-        TodoComponent(
-          title: todos[i].title, 
-          date: todos[i].createdAt, 
-          lists: todos[i].lists.length,
-        )
-      );
-    } 
-
-    return Column(children: todoComponents);
   }
 }

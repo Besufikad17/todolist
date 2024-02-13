@@ -1,4 +1,3 @@
-import 'package:equatable/equatable.dart';
 import 'package:hive/hive.dart';
 
 part 'local_list_service.g.dart';
@@ -13,7 +12,7 @@ enum ListStatus {
 }
 
 @HiveType(typeId: 2)
-class LocalList extends Equatable {
+class LocalList extends HiveObject {
   
   @HiveField(0)
   final String title;
@@ -21,11 +20,8 @@ class LocalList extends Equatable {
   @HiveField(1)
   final ListStatus status;
 
-  const LocalList({
+  LocalList({
     required this.title,
     required this.status
   });
-  
-  @override
-  List<Object?> get props => [title, status];
 }

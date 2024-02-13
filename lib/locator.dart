@@ -14,6 +14,7 @@ Future<void> initDependency() async {
   final appDocumentDir = await path_provider.getApplicationDocumentsDirectory();
   Hive.init(appDocumentDir.path);
   Hive.registerAdapter(LocalTodoAdapter());
+  Hive.registerAdapter(TodoStatusAdapter());
   Hive.registerAdapter(LocalListAdapter());
   Hive.registerAdapter(ListStatusAdapter());
   Hive.registerAdapter(ThemeModelAdapter());

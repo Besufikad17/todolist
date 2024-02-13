@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:swipe_to/swipe_to.dart';
 import 'package:todolist/config/router/args.dart';
+import 'package:todolist/data/datasource/local/local_todo_service.dart';
+import 'package:todolist/presentation/bloc/todo_bloc.dart';
 import 'package:todolist/presentation/components/popup.dart';
 import 'package:todolist/presentation/components/text.dart';
 import 'package:todolist/utils/constants/enums.dart';
@@ -10,14 +12,12 @@ import 'package:todolist/utils/resources/data.dart';
 class TodoComponent extends StatelessWidget {
   const TodoComponent({
     super.key,
-    required this.title,
-    required this.date,
-    required this.lists,
+    required this.todo,
+    required this.bloc
   });
 
-  final String title;
-  final DateTime date;
-  final int lists;
+  final TodoBloc bloc;
+  final LocalTodo todo;
   
   @override
   Widget build(BuildContext context) {
@@ -31,7 +31,7 @@ class TodoComponent extends StatelessWidget {
           context,
           '/todo',
           arguments: TodoPageArgs(
-            title
+            todo.title
           ),
         );
       },
@@ -43,7 +43,7 @@ class TodoComponent extends StatelessWidget {
           showDialog(
             context: context, 
             builder: (BuildContext context) {
-              return const PromptPopup(type: ActionType.archive);
+              return PromptPopup(type: ActionType.archive, todo: todo, bloc: bloc,);
             }
           );
         },
@@ -51,7 +51,7 @@ class TodoComponent extends StatelessWidget {
           showDialog(
             context: context, 
             builder: (BuildContext context) {
-              return const PromptPopup(type: ActionType.delete);
+              return PromptPopup(type: ActionType.delete, todo: todo, bloc: bloc,);
             }
           );
         },
@@ -75,13 +75,13 @@ class TodoComponent extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             MyText(
-                              text: title, 
+                              text: todo.title, 
                               size: 15,
                               color: textColor.replaceAll(RegExp(r'f'), '')
                             ),
                             const SizedBox(height: 10,),
                             MyText(
-                              text: formatDate(date), 
+                              text: formatDate(todo.createdAt), 
                               size: 12,
                               color: primaryColor.replaceAll(RegExp(r'f'), ''),
                               isLight: true,
@@ -89,7 +89,7 @@ class TodoComponent extends StatelessWidget {
                           ],
                         ),
                         MyText(
-                          text: lists.toString(), 
+                          text: todo.lists.length.toString(), 
                           size: 15, 
                           color: textColor.replaceAll(RegExp(r'f'), ''),
                         )
@@ -105,4 +105,5 @@ class TodoComponent extends StatelessWidget {
     );
   }
 }
+
 

@@ -18,6 +18,13 @@ class GetAllTodos extends TodoEvent {
   List<Object?> get props => [];
 }
 
+class GetArchivedTodos extends TodoEvent {
+  const GetArchivedTodos();
+
+  @override
+  List<Object?> get props => [];
+}
+
 class GetTodo extends TodoEvent {
   final String title;
 
@@ -55,4 +62,14 @@ class UpdateListStatus extends TodoEvent {
   
   @override
   List<Object?> get props => [status, listTitle, todoTitle];
+}
+
+class UpdateTodoStatus extends TodoEvent {
+  final LocalTodo todo;
+  final TodoStatus status;
+
+  const UpdateTodoStatus(this.todo, this.status);
+
+  @override
+  List<Object?> get props => [todo, status];
 }

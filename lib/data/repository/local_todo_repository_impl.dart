@@ -16,10 +16,18 @@ class LocalTodoRepositoryImpl implements LocalTodoRepository {
   @override
   Future<void> addList(LocalList list, String title) async {
     final todoToEdit = _todoBox.values.firstWhere((todo) => todo.title == title);
-    final index = _todoBox.values.toList().indexOf(todoToEdit);
     List<LocalList> lists = todoToEdit.lists;
     lists.add(list);
-    await _todoBox.put(index, LocalTodo(title: todoToEdit.title, lists: lists, createdAt: todoToEdit.createdAt));
+    todoToEdit.save();
+    // await _todoBox.put(
+    //   index, 
+    //   LocalTodo(
+    //     title: todoToEdit.title, 
+    //     lists: lists, 
+    //     status: TodoStatus.pending, 
+    //     createdAt: todoToEdit.createdAt
+    //   )
+    // );
   }
 
   @override
@@ -33,16 +41,48 @@ class LocalTodoRepositoryImpl implements LocalTodoRepository {
         lists.add(LocalList(title: listTitle, status: status));
       }
     }
-    await _todoBox.put(index, LocalTodo(title: todoToEdit.title, lists: lists, createdAt: todoToEdit.createdAt));
+    todoToEdit.save();
+    // await _todoBox.put(
+    //   index, 
+    //   LocalTodo(
+    //     title: todoToEdit.title, 
+    //     lists: lists, 
+    //     status: TodoStatus.pending, 
+    //     createdAt: todoToEdit.createdAt
+    //   )
+    // );
   }
 
   @override
-  Future<List<LocalTodo>> getTodos() async {
-    return _todoBox.values.toList();
+  Future<List<LocalTodo>> getTodos(TodoStatus status) async {
+    return _todoBox.values.where((todo) => todo.status == status).toList();
   }
 
   @override
-  Future<LocalTodo> getTodoByTitle (String title) async {
-    return _todoBox.values.where((todo) => todo.title == title).first;
+  Future<LocalTodo> getTodoByTitle (TodoStatus status, String title) async {
+    return _todoBox.values.where((todo) => todo.title == title && todo.status == status).first;
+  }
+  
+  @override
+  Future<void> updateTodoStatus(LocalTodo todo, TodoStatus status) async {
+    todo.status = status;
+    todo.save();
+  }
+  
+  @override
+  Future<void> deleteList(LocalTodo todo) {
+    // TODO: implement deleteList
+    throw UnimplementedError();
+  }
+  
+  @override
+  Future<void> deleteTodo(LocalTodo todo) async {
+    todo.delete();
+  }
+  
+  @override
+  Future<void> updateList(LocalTodo todo) {
+    // TODO: implement updateList
+    throw UnimplementedError();
   }
 }

@@ -28,6 +28,7 @@ class AddPopup extends StatelessWidget {
       child: Container(
         height: 150,
         decoration: BoxDecoration(
+          borderRadius: const BorderRadius.all(Radius.circular(10)),
           color: Theme.of(context).scaffoldBackgroundColor,
             boxShadow: [
             BoxShadow(
@@ -59,7 +60,7 @@ class AddPopup extends StatelessWidget {
                 borderRadius: 15, 
                 onPressed: () {
                   if(flag == "todo") {
-                    bloc.add(AddTodo(LocalTodo(title: text.text, lists: [], createdAt: DateTime.now())));
+                    bloc.add(AddTodo(LocalTodo(title: text.text, lists: [], status: TodoStatus.pending, createdAt: DateTime.now())));
                     bloc.add(const GetAllTodos());
                   }else {
                     bloc.add(AddList(LocalList(title: text.text, status: ListStatus.pending), todoTitle!));
@@ -75,9 +76,16 @@ class AddPopup extends StatelessWidget {
 }
 
 class PromptPopup extends StatelessWidget {
-  const PromptPopup({super.key, required this.type});
+  const PromptPopup({
+    super.key, 
+    required this.type, 
+    required this.bloc,
+    required this.todo
+  });
 
   final ActionType type;
+  final TodoBloc bloc;
+  final LocalTodo todo;
 
   @override
   Widget build(BuildContext context) {
@@ -88,6 +96,7 @@ class PromptPopup extends StatelessWidget {
       child: Container(
         height: 150,
         decoration: BoxDecoration(
+          borderRadius: const BorderRadius.all(Radius.circular(10)),
           color: Theme.of(context).scaffoldBackgroundColor,
             boxShadow: [
             BoxShadow(
@@ -123,6 +132,11 @@ class PromptPopup extends StatelessWidget {
                     fgcolor: textColor.replaceAll(RegExp(r'f'), ''),
                     bgcolor: primaryColor.replaceAll(RegExp(r'f'), ''),
                     onPressed: (){
+                      if(type == ActionType.archive) {
+                        bloc.add(UpdateTodoStatus(todo, TodoStatus.archived));
+                      }else {
+                        
+                      }
                       Navigator.pop(context);
                     }, 
                   ),
