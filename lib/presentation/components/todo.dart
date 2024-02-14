@@ -21,7 +21,6 @@ class TodoComponent extends StatelessWidget {
   
   @override
   Widget build(BuildContext context) {
-    final width = MediaQuery.of(context).size.width;
     final textColor = toHex(Theme.of(context).textTheme.displayLarge!.color!);
     final primaryColor = toHex(Theme.of(context).colorScheme.primary);
 
@@ -56,51 +55,48 @@ class TodoComponent extends StatelessWidget {
             }
           );
         },
-        child: SizedBox(
-          height: 50,
-          width: width < 600 ? width: 500,
-          child: Center(
-            child: Column(
-              children: [
-                SizedBox(
-                  width: width - 10,
-                  child: Padding(
-                    padding: const EdgeInsets.only(
-                      top: 8
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      mainAxisSize: MainAxisSize.max,
+        child: LayoutBuilder(
+          builder: (BuildContext context, BoxConstraints constraints) {
+            return SizedBox(
+              height: 50,
+              width: constraints.maxWidth,
+              child: Padding(
+                padding: const EdgeInsets.only(
+                  top: 8,
+                  left: 8,
+                  right: 8
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            MyText(
-                              text: todo.title, 
-                              size: 15,
-                              color: textColor.replaceAll(RegExp(r'f'), '')
-                            ),
-                            const SizedBox(height: 10,),
-                            MyText(
-                              text: formatDate(todo.createdAt), 
-                              size: 12,
-                              color: primaryColor.replaceAll(RegExp(r'f'), ''),
-                              isLight: true,
-                            ),
-                          ],
-                        ),
                         MyText(
-                          text: todo.lists.length.toString(), 
-                          size: 15, 
-                          color: textColor.replaceAll(RegExp(r'f'), ''),
-                        )
+                          text: todo.title, 
+                          size: 15,
+                          color: textColor.replaceAll(RegExp(r'f'), '')
+                        ),
+                        const SizedBox(height: 10,),
+                        MyText(
+                          text: formatDate(todo.createdAt), 
+                          size: 12,
+                          color: primaryColor.replaceAll(RegExp(r'f'), ''),
+                          isLight: true,
+                        ),
                       ],
                     ),
-                  ),
+                    MyText(
+                      text: todo.lists.length.toString(), 
+                      size: 15, 
+                      color: textColor.replaceAll(RegExp(r'f'), ''),
+                    )
+                  ],
                 ),
-              ],
-            ),
-          ),
+              ),
+            );
+          }
         ),
       ),
     );

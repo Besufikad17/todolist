@@ -66,7 +66,7 @@ class MySideBar extends StatelessWidget {
               const SizedBox(height: 20,),
               GestureDetector(
                 onTap: () {
-                  
+                  Navigator.pushNamed(context, '/settings');
                 },
                 child: Row(
                   children: [
@@ -85,13 +85,11 @@ class MySideBar extends StatelessWidget {
                       return AlertPopup(
                         title: "About", 
                         type: AlertType.message, 
-                        body: Expanded(
-                          child: MyText(
-                            text: "Todolist is a simple todo list app using clean architecture and" 
-                            "other best practices used in flutter. Don't forget to 🌟 the repo 😜.", 
-                            size: 12,
-                            overflow: TextOverflow.visible
-                          ),
+                        body: MyText(
+                          text: "Todolist is a simple todo list app using clean architecture and" 
+                          "other best practices used in flutter. Don't forget to 🌟 the repo 😜.", 
+                          size: 12,
+                          overflow: TextOverflow.clip
                         )
                       );
                     }

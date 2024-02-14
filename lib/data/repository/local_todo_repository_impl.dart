@@ -24,7 +24,6 @@ class LocalTodoRepositoryImpl implements LocalTodoRepository {
   @override
   Future<void> updateListStatus(ListStatus status, String listTitle, String todoTitle) async {
     final todoToEdit = _todoBox.values.firstWhere((todo) => todo.title == todoTitle);
-    final index = _todoBox.values.toList().indexOf(todoToEdit);
     List<LocalList> lists = todoToEdit.lists;
     for(var list in lists) {
       if(list.title == listTitle) {

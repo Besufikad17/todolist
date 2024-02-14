@@ -7,6 +7,7 @@ import 'package:todolist/presentation/components/text.dart';
 import 'package:todolist/presentation/components/text_field.dart';
 import 'package:todolist/utils/constants/enums.dart';
 import 'package:todolist/utils/resources/colors.dart';
+import 'package:todolist/utils/resources/widget.dart';
 
 class AddPopup extends StatelessWidget {
   const AddPopup({
@@ -28,7 +29,7 @@ class AddPopup extends StatelessWidget {
       child: Container(
         height: 150,
         decoration: BoxDecoration(
-          borderRadius: const BorderRadius.all(Radius.circular(10)),
+          borderRadius: const BorderRadius.all(Radius.circular(5)),
           color: Theme.of(context).scaffoldBackgroundColor,
             boxShadow: [
             BoxShadow(
@@ -91,12 +92,15 @@ class PromptPopup extends StatelessWidget {
   Widget build(BuildContext context) {
     final textColor = toHex(Theme.of(context).textTheme.displayLarge!.color!);
     final primaryColor = toHex(Theme.of(context).colorScheme.primary);
+    String action = type == ActionType.archive && todo.status == TodoStatus.pending ?
+      "archive" : type == ActionType.archive && todo.status == TodoStatus.archived ?
+      "unarchive" : "delete";
 
     return Dialog(
       child: Container(
         height: 150,
         decoration: BoxDecoration(
-          borderRadius: const BorderRadius.all(Radius.circular(10)),
+          borderRadius: const BorderRadius.all(Radius.circular(5)),
           color: Theme.of(context).scaffoldBackgroundColor,
             boxShadow: [
             BoxShadow(
@@ -113,7 +117,7 @@ class PromptPopup extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               MyText(
-                text: "Are you sure you want to \n ${type.name} this todo?", 
+                text: "Are you sure you want to \n $action this todo?", 
                 size: 15,
                 isBold: true,
                 color: textColor.replaceAll(RegExp(r'f'), ''),
@@ -132,10 +136,12 @@ class PromptPopup extends StatelessWidget {
                     fgcolor: textColor.replaceAll(RegExp(r'f'), ''),
                     bgcolor: primaryColor.replaceAll(RegExp(r'f'), ''),
                     onPressed: (){
-                      if(type == ActionType.archive) {
+                      if(type == ActionType.archive && todo.status == TodoStatus.pending) {
                         bloc.add(UpdateTodoStatus(todo, TodoStatus.archived));
-                      }else {
-                        
+                      }else if(type == ActionType.archive && todo.status == TodoStatus.archived) {
+                        bloc.add(UpdateTodoStatus(todo, TodoStatus.pending));
+                      }else if(type == ActionType.delete) {
+
                       }
                       Navigator.pop(context);
                     }, 
@@ -172,10 +178,49 @@ class AlertPopup extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       title: type == AlertType.message ? 
-        Text(title) :
+        MyText(text: title, size: 15,) :
         Text(title, style: const TextStyle(color: Colors.red)),
       content: body,
+    );
+  }
+}
+
+class ThemeSelectorPopup extends StatelessWidget {
+  const ThemeSelectorPopup({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Dialog(
+      child: Container(
+        height: 200,
+        width: 300,
+        decoration: BoxDecoration(
+          borderRadius: const BorderRadius.all(Radius.circular(2)),
+          color: Theme.of(context).scaffoldBackgroundColor,
+            boxShadow: [
+            BoxShadow(
+              color: Theme.of(context).scaffoldBackgroundColor.withOpacity(0.5),
+              spreadRadius: 1,
+              blurRadius: 5,
+              offset: const Offset(0, 3), // changes position of shadow
+            ),
+          ],
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(height: 10,),
+              MyText(text: "Themes", size: 15,),
+              const SizedBox(height: 10,),
+              buildThemeList(context)
+            ]
+          ),
+        ),
+      ),
     );
   }
 }
