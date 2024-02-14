@@ -44,7 +44,7 @@ class MyApp extends StatelessWidget {
           }else {
             return MaterialApp(
               title: 'TodoList',
-              theme: appThemeData[MyAppTheme.lightGruvBox],
+              theme: appThemeData[MyAppTheme.light],
               routes: routes,
               initialRoute: '/',
             );

@@ -73,7 +73,7 @@ class _TodoPageState extends State<TodoPage> {
   Widget _buildLoaded(TodoBloc bloc, TodoLoaded state, String title, Color checkColor) {
     if(state.todo.lists.isEmpty) {
       return  Center(
-        child: MyText(text: "No lists :(", size: 15, color: toHex(checkColor).replaceAll(RegExp(r'f'), ''),),
+        child: MyText(text: "No lists :(", size: 15, color: "#${toHex(checkColor).substring(3)}",),
       );
     }else {
       return Column(

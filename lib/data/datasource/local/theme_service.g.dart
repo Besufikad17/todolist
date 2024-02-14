@@ -51,6 +51,10 @@ class MyAppThemeAdapter extends TypeAdapter<MyAppTheme> {
         return MyAppTheme.lightGruvBox;
       case 1:
         return MyAppTheme.darkGruvBox;
+      case 2:
+        return MyAppTheme.light;
+      case 3:
+        return MyAppTheme.dark;
       default:
         return MyAppTheme.lightGruvBox;
     }
@@ -64,6 +68,12 @@ class MyAppThemeAdapter extends TypeAdapter<MyAppTheme> {
         break;
       case MyAppTheme.darkGruvBox:
         writer.writeByte(1);
+        break;
+      case MyAppTheme.light:
+        writer.writeByte(2);
+        break;
+      case MyAppTheme.dark:
+        writer.writeByte(3);
         break;
     }
   }

@@ -120,7 +120,7 @@ class PromptPopup extends StatelessWidget {
                 text: "Are you sure you want to \n $action this todo?", 
                 size: 15,
                 isBold: true,
-                color: textColor.replaceAll(RegExp(r'f'), ''),
+                color: "#${textColor.substring(3)}",
               ),
               const SizedBox(height: 10,),
               Row(
@@ -133,8 +133,8 @@ class PromptPopup extends StatelessWidget {
                     height: 20, 
                     fontSize: 15, 
                     borderRadius: 5,
-                    fgcolor: textColor.replaceAll(RegExp(r'f'), ''),
-                    bgcolor: primaryColor.replaceAll(RegExp(r'f'), ''),
+                    fgcolor: "#${textColor.substring(3)}",
+                    bgcolor: "#${primaryColor.substring(3)}",
                     onPressed: (){
                       if(type == ActionType.archive && todo.status == TodoStatus.pending) {
                         bloc.add(UpdateTodoStatus(todo, TodoStatus.archived));
@@ -152,7 +152,7 @@ class PromptPopup extends StatelessWidget {
                     height: 20, 
                     fontSize: 15, 
                     borderRadius: 5,
-                    fgcolor: textColor.replaceAll(RegExp(r'f'), ''),
+                    fgcolor: "#${textColor.substring(3)}",
                     bgcolor: primaryColor,
                     onPressed: (){
                       Navigator.pop(context);
@@ -194,7 +194,7 @@ class ThemeSelectorPopup extends StatelessWidget {
   Widget build(BuildContext context) {
     return Dialog(
       child: Container(
-        height: 200,
+        height: 300,
         width: 300,
         decoration: BoxDecoration(
           borderRadius: const BorderRadius.all(Radius.circular(2)),

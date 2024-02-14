@@ -9,7 +9,13 @@ enum MyAppTheme {
   lightGruvBox,
 
   @HiveField(1)
-  darkGruvBox
+  darkGruvBox,
+
+  @HiveField(2)
+  light,
+
+  @HiveField(3)
+  dark
 }
 
 @HiveType(typeId: 5)

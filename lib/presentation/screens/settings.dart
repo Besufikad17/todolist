@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hive/hive.dart';
+import 'package:todolist/data/datasource/local/theme_service.dart';
+import 'package:todolist/data/repository/theme_repository_impl.dart';
 import 'package:todolist/locator.dart';
 import 'package:todolist/presentation/bloc/theme_bloc.dart';
 import 'package:todolist/presentation/components/app_bar.dart';
@@ -23,7 +26,7 @@ class _SettingsPageState extends State<SettingsPage> {
   Widget build(BuildContext context) {
     final primaryColor = toHex(Theme.of(context).colorScheme.primary);
     final textColor = toHex(Theme.of(context).textTheme.displayLarge!.color!);
-    
+    final ThemeRepositoryImpl repository = ThemeRepositoryImpl(locator.get<Box<ThemeModel>>());
    
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
@@ -43,7 +46,7 @@ class _SettingsPageState extends State<SettingsPage> {
               MyText(text: "General", size: 18),
               const SizedBox(height: 20,),
               BlocProvider(
-                create: (context) => locator.get<ThemeBloc>()..add(const GetTheme()),
+                create: (context) => ThemeBloc(repository)..add(const GetTheme()),
                 child: BlocConsumer<ThemeBloc, ThemeState>(
                   listener: (context, state) => {},
                   builder: (context, state) {
@@ -67,7 +70,7 @@ class _SettingsPageState extends State<SettingsPage> {
                                 children: [
                                   MyText(text: "Theme", size: 15),
                                   const SizedBox(height: 10,),
-                                  MyText(text: state.appTheme.name, size: 12, color: primaryColor.replaceAll(RegExp(r'f'), ''),)
+                                  MyText(text: state.appTheme.name, size: 12, color:"#${primaryColor.substring(3)}",)
                                 ],
                               ),
                             );
@@ -95,20 +98,20 @@ class _SettingsPageState extends State<SettingsPage> {
                             MyText(
                               text: "Set priority by default", 
                               size: 15,
-                              color: textColor.replaceAll(RegExp(r'f'), '')
+                              color: "#${textColor.substring(3)}"
                             ),
                             const SizedBox(height: 10,),
                             MyText(
                               text: "New todos will be set as high priority", 
                               size: 12,
-                              color: primaryColor.replaceAll(RegExp(r'f'), ''),
+                              color: "#${primaryColor.substring(3)}",
                               isLight: true,
                             ),
                           ],
                         ),
                         Switch(
                           value: setPriority, 
-                          activeColor: getColorFromHex(textColor.replaceAll(RegExp(r'f'), '')),
+                          activeColor: getColorFromHex("#${textColor.substring(3)}"),
                           onChanged: (val) {
                             setState(() {
                               setPriority = val;
@@ -138,20 +141,20 @@ class _SettingsPageState extends State<SettingsPage> {
                             MyText(
                               text: "Show list counts", 
                               size: 15,
-                              color: textColor.replaceAll(RegExp(r'f'), '')
+                              color: "#${textColor.substring(3)}"
                             ),
                             const SizedBox(height: 10,),
                             MyText(
                               text: "Show the number of lists in a todo", 
                               size: 12,
-                              color: primaryColor.replaceAll(RegExp(r'f'), ''),
+                              color: "#${primaryColor.substring(3)}",
                               isLight: true,
                             ),
                           ],
                         ),
                         Switch(
                           value: showCount, 
-                          activeColor: getColorFromHex(textColor.replaceAll(RegExp(r'f'), '')),
+                          activeColor: getColorFromHex("#${textColor.substring(3)}"),
                           onChanged: (val) {
                             setState(() {
                               showCount = val;

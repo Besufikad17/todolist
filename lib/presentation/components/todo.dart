@@ -76,13 +76,13 @@ class TodoComponent extends StatelessWidget {
                         MyText(
                           text: todo.title, 
                           size: 15,
-                          color: textColor.replaceAll(RegExp(r'f'), '')
+                          color: "#${textColor.substring(3)}"
                         ),
                         const SizedBox(height: 10,),
                         MyText(
                           text: formatDate(todo.createdAt), 
                           size: 12,
-                          color: primaryColor.replaceAll(RegExp(r'f'), ''),
+                          color: "#${primaryColor.substring(3)}",
                           isLight: true,
                         ),
                       ],
@@ -90,7 +90,7 @@ class TodoComponent extends StatelessWidget {
                     MyText(
                       text: todo.lists.length.toString(), 
                       size: 15, 
-                      color: textColor.replaceAll(RegExp(r'f'), ''),
+                      color: "#${primaryColor.substring(3)}",
                     )
                   ],
                 ),

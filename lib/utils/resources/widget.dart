@@ -58,7 +58,7 @@ Widget buildLoading(BuildContext context) {
                   MyText(
                     text: itemAppTheme.toString().split(".")[1],
                     size: 18,
-                    color: toHex(appThemeData[itemAppTheme]!.colorScheme.onPrimary).replaceAll(RegExp(r'f'), '')
+                    color: "#${toHex(appThemeData[itemAppTheme]!.colorScheme.onPrimary).substring(3)}"
                   ),
                 ],
               ),
