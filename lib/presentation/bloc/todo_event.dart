@@ -27,8 +27,9 @@ class GetArchivedTodos extends TodoEvent {
 
 class GetTodo extends TodoEvent {
   final String title;
+  final TodoStatus status;
 
-  const GetTodo(this.title);
+  const GetTodo(this.title, this.status);
 
   @override
   List<Object?> get props => [title];

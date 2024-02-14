@@ -10,6 +10,7 @@ import 'package:todolist/presentation/bloc/todo_bloc.dart';
 import 'package:todolist/presentation/components/app_bar.dart';
 import 'package:todolist/presentation/components/popup.dart';
 import 'package:todolist/presentation/components/text.dart';
+import 'package:todolist/utils/resources/colors.dart';
 import 'package:todolist/utils/resources/widget.dart';
 
 class TodoPage extends StatefulWidget {
@@ -39,15 +40,11 @@ class _TodoPageState extends State<TodoPage> {
         ),
       ),
       body: BlocProvider(
-        create: (context) => TodoBloc(repository)..add(GetTodo(args.title)),
+        create: (context) => TodoBloc(repository)..add(GetTodo(args.title, args.status)),
         child: BlocConsumer<TodoBloc, TodoState>(
           listener: (context, state) => {},
           builder: (BuildContext context, TodoState state) {
-            if (state is TodoInitial) {
-              return  Center(
-                child: MyText(text: "No lists :(", size: 15),
-              );
-            } else if (state is TodoLoading) {
+            if (state is TodoLoading) {
               return buildLoading(context);
             } else if (state is TodoLoaded) {
               return _buildLoaded(context.read<TodoBloc>(), state, args.title, textColor!);
@@ -74,40 +71,46 @@ class _TodoPageState extends State<TodoPage> {
   }
 
   Widget _buildLoaded(TodoBloc bloc, TodoLoaded state, String title, Color checkColor) {
-    return Column(
-      children: [
-        Expanded(
-          child: ListView.builder(
-            itemCount: state.todo.lists.length,
-            itemBuilder: (context, index) {
-              return CheckboxListTile(
-                title: Text(
-                  state.todo.lists[index].title,
-                  style: TextStyle(
-                    color: checkColor,
-                    decoration: state.todo.lists[index].status == ListStatus.completed
-                      ? TextDecoration.lineThrough
-                      : TextDecoration.none,
+    if(state.todo.lists.isEmpty) {
+      return  Center(
+        child: MyText(text: "No lists :(", size: 15, color: toHex(checkColor).replaceAll(RegExp(r'f'), ''),),
+      );
+    }else {
+      return Column(
+        children: [
+          Expanded(
+            child: ListView.builder(
+              itemCount: state.todo.lists.length,
+              itemBuilder: (context, index) {
+                return CheckboxListTile(
+                  title: Text(
+                    state.todo.lists[index].title,
+                    style: TextStyle(
+                      color: checkColor,
+                      decoration: state.todo.lists[index].status == ListStatus.completed
+                        ? TextDecoration.lineThrough
+                        : TextDecoration.none,
+                    ),
                   ),
-                ),
-                checkColor: checkColor,
-                side: BorderSide(
-                  color: checkColor
-                ),
-                value: state.todo.lists[index].status == ListStatus.completed,
-                onChanged: (bool? value) {
-                  if (value ?? false) {
-                    bloc.add(UpdateListStatus(ListStatus.completed, state.todo.lists[index].title, title));
-                  } else {
-                    bloc.add(UpdateListStatus(ListStatus.pending, state.todo.lists[index].title, title));
-                  }
-                },
-                controlAffinity: ListTileControlAffinity.leading,
-              );
-            }
+                  checkColor: checkColor,
+                  side: BorderSide(
+                    color: checkColor
+                  ),
+                  value: state.todo.lists[index].status == ListStatus.completed,
+                  onChanged: (bool? value) {
+                    if (value ?? false) {
+                      bloc.add(UpdateListStatus(ListStatus.completed, state.todo.lists[index].title, title));
+                    } else {
+                      bloc.add(UpdateListStatus(ListStatus.pending, state.todo.lists[index].title, title));
+                    }
+                  },
+                  controlAffinity: ListTileControlAffinity.leading,
+                );
+              }
+            ),
           ),
-        ),
-      ],
-    );
+        ],
+      );
+    }
   }
 }

@@ -19,15 +19,6 @@ class LocalTodoRepositoryImpl implements LocalTodoRepository {
     List<LocalList> lists = todoToEdit.lists;
     lists.add(list);
     todoToEdit.save();
-    // await _todoBox.put(
-    //   index, 
-    //   LocalTodo(
-    //     title: todoToEdit.title, 
-    //     lists: lists, 
-    //     status: TodoStatus.pending, 
-    //     createdAt: todoToEdit.createdAt
-    //   )
-    // );
   }
 
   @override
@@ -42,15 +33,6 @@ class LocalTodoRepositoryImpl implements LocalTodoRepository {
       }
     }
     todoToEdit.save();
-    // await _todoBox.put(
-    //   index, 
-    //   LocalTodo(
-    //     title: todoToEdit.title, 
-    //     lists: lists, 
-    //     status: TodoStatus.pending, 
-    //     createdAt: todoToEdit.createdAt
-    //   )
-    // );
   }
 
   @override

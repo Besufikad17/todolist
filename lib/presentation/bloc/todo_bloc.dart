@@ -25,7 +25,7 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
 
      on<GetTodo>((event, emit) async {
       emit(const TodoLoading());
-      final todo = await _repository.getTodoByTitle(TodoStatus.pending, event.title);
+      final todo = await _repository.getTodoByTitle(event.status, event.title);
       emit(TodoLoaded(todo));
      });
 

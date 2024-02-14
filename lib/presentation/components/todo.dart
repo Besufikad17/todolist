@@ -31,7 +31,8 @@ class TodoComponent extends StatelessWidget {
           context,
           '/todo',
           arguments: TodoPageArgs(
-            todo.title
+            todo.title,
+            todo.status ?? TodoStatus.pending
           ),
         );
       },
